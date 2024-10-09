@@ -7,163 +7,135 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
         body {
+            background-color: #2f4f4f; /* Dark slate gray */
+            color: #e0e0e0;
             font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-        }
-        h1, h2, h3 {
-            font-family: Georgia, serif;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 40px 20px;
         }
         .section {
-            padding: 40px 0;
+            background-color: #4f4f4f; /* Medium gray box */
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
         }
-        a {
-            color: #ccc;
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
         }
-        a:hover {
-            color: #fff;
+        .skills img {
+            width: 50px;
+            margin: 10px;
+            transition: transform 0.3s;
         }
-        ul {
-            list-style-type: disc;
-            margin-left: 20px;
-            color: #aaa;
+        .skills img:hover {
+            transform: scale(1.1);
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: #4f4f4f;
+            color: #e0e0e0;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
 <body>
 
-    <!-- Main Container -->
-    <div class="container">
-
-        <!-- Hero Section -->
-        <section class="section text-center">
-            <h1 class="text-6xl font-bold">Thaddeus Jones</h1>
-            <p class="mt-4 text-lg text-gray-400">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank">LinkedIn</a></p>
-        </section>
-
-        <!-- About Section -->
+    <!-- Summary Section -->
+    <div class="container mx-auto p-4">
         <section class="section">
-            <h2 class="text-3xl font-semibold mb-4">Professional Summary</h2>
-            <p class="text-gray-300">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions. I have previously led system engineering efforts for small satellite programs and have experience testing crewed deep space vehicles and missile systems.</p>
+            <h1 class="text-4xl font-bold text-center mb-4">Thaddeus Jones</h1>
+            <p class="text-center">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank" class="text-blue-400">LinkedIn</a></p>
+            <p class="mt-4">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions. I have previously led system engineering efforts for small satellite programs and have experience testing crewed deep space vehicles and missile systems.</p>
         </section>
 
         <!-- Experience Section -->
         <section class="section">
             <h2 class="text-3xl font-semibold mb-4">Experience</h2>
-
-            <!-- Lockheed Martin Section -->
-            <h3 class="text-2xl font-bold">Lockheed Martin</h3>
-
-            <div class="mt-4">
-                <div class="flex justify-between">
-                    <h4 class="text-xl">Space Systems Architect</h4>
-                    <span class="text-gray-500">Jun 2022 - Present</span>
-                </div>
-                <ul class="mt-2">
-                    <li>Leading several large deep space exploration proposal efforts.</li>
-                    <li>Developing architectures for complex, multi-system deep space vehicles.</li>
-                    <li>Defining mission technical requirements and mission CONOPS.</li>
-                    <li>Performing system level trade studies and identifying risks.</li>
-                    <li>Writing and presenting technical review packages to NASA partners.</li>
-                    <li>Developing the LM deep space smallsat strategy and leading an IRAD flight mission.</li>
-                    <li>Won and now executing a DoD lunar smallsat mission as spacecraft lead.</li>
-                    <li>Architected a $1B NASA astrophysics probe proposal and designed a Mars lander solution.</li>
-                </ul>
+            
+            <!-- Lockheed Martin -->
+            <div class="flex-container">
+                <h3 class="text-2xl">Lockheed Martin - Space Systems Architect</h3>
+                <span class="text-gray-400">Jun 2022 - Present</span>
             </div>
+            <ul class="list-disc ml-8 mt-2">
+                <li>Leading several large deep space exploration proposal efforts.</li>
+                <!-- Add more bullet points as needed -->
+            </ul>
 
-            <!-- General Atomics Section -->
-            <h3 class="text-2xl font-bold mt-8">General Atomics</h3>
-
-            <div class="mt-4">
-                <div class="flex justify-between">
-                    <h4 class="text-xl">Deputy Chief Engineer</h4>
-                    <span class="text-gray-500">Oct 2021 – Jun 2022</span>
-                </div>
-                <ul class="mt-2">
-                    <li>Led engineering efforts, maintaining system budgets and requirement flow-down.</li>
-                    <li>Defined system CONOPS for various mission phases and managed subcontracts.</li>
-                    <li>Presented technical designs in milestone reviews to the US Space Force (USSF).</li>
-                    <li>Developed Monte Carlo simulations in Python to evaluate constellation reliability.</li>
-                </ul>
+            <!-- General Atomics -->
+            <div class="flex-container mt-6">
+                <h3 class="text-2xl">General Atomics - Deputy Chief Engineer</h3>
+                <span class="text-gray-400">Oct 2021 – Jun 2022</span>
             </div>
-
-            <div class="mt-6">
-                <div class="flex justify-between">
-                    <h4 class="text-xl">Lead Spacecraft Systems Engineer</h4>
-                    <span class="text-gray-500">Jun 2019 – Oct 2021</span>
-                </div>
-                <ul class="mt-2">
-                    <li>Managed spacecraft system requirements and delivered key plans to NASA.</li>
-                    <li>Developed Interface Control Documents and led technical working groups with NASA.</li>
-                    <li>Oversaw spacecraft simulator development and performed contact duration analysis in STK.</li>
-                    <li>Operated the OTB-1 spacecraft on-orbit during fault recovery.</li>
-                </ul>
-            </div>
-
-            <!-- Lockheed Martin Section -->
-            <h3 class="text-2xl font-bold mt-8">Lockheed Martin</h3>
-
-            <div class="mt-6">
-                <div class="flex justify-between">
-                    <h4 class="text-xl">Spacecraft Systems Engineer</h4>
-                    <span class="text-gray-500">Dec 2017 – Jun 2019</span>
-                </div>
-                <ul class="mt-2">
-                    <li>Developed and tested Orion spacecraft mission cases, integrating hardware and software.</li>
-                    <li>Scripted fault scenarios using Python and conducted mission entry tests for Artemis-1.</li>
-                    <li>Wrote test procedures, reports, and documentation for Orion mission testing.</li>
-                    <li>Ran Run-for-Record tests for NASA to validate requirements.</li>
-                </ul>
-            </div>
-
-            <!-- Early Lockheed Martin Role -->
-            <div class="mt-6">
-                <div class="flex justify-between">
-                    <h4 class="text-xl">Systems Engineer</h4>
-                    <span class="text-gray-500">Jun 2015 – Dec 2017</span>
-                </div>
-                <ul class="mt-2">
-                    <li>Installed and tested the AEGIS missile system on destroyers in Japan and South Korea.</li>
-                    <li>Led Change Review Boards with Japanese and South Korean Navies.</li>
-                    <li>Passed regression requirements for AEGIS defense programs and created test procedures in DOORS.</li>
-                </ul>
-            </div>
+            <ul class="list-disc ml-8 mt-2">
+                <li>Led engineering efforts, maintaining system budgets and requirements.</li>
+                <!-- Add more bullet points as needed -->
+            </ul>
+            <!-- Additional positions follow the same structure -->
         </section>
 
         <!-- Education Section -->
         <section class="section">
             <h2 class="text-3xl font-semibold mb-4">Education</h2>
-            <h3 class="text-xl">MS - Space Systems Engineering, Johns Hopkins University</h3>
-            <p class="text-gray-500">Dec 2020 | Graduated with Distinction</p>
+            <div class="flex-container">
+                <h3 class="text-xl">MS - Space Systems Engineering, Johns Hopkins University</h3>
+                <span class="text-gray-400">Dec 2020</span>
+            </div>
+            <p class="text-gray-400">Graduated with Distinction</p>
 
-            <h3 class="text-xl mt-4">BSE - Mechanical Engineering & Material Science, Duke University</h3>
-            <p class="text-gray-500">May 2015</p>
+            <div class="flex-container mt-4">
+                <h3 class="text-xl">BSE - Mechanical Engineering & Material Science, Duke University</h3>
+                <span class="text-gray-400">May 2015</span>
+            </div>
         </section>
 
         <!-- Skills Section -->
         <section class="section">
             <h2 class="text-3xl font-semibold mb-4">Skills</h2>
-            <ul>
-                <li>Engineering Software: SolidWorks, MATLAB, Python, AGI STK, DOORS, SPICE, CAMEO</li>
-                <li>Computer Skills: Unix/Linux, Microsoft Office, Atlassian Suite, Windchill</li>
-                <li>Security Clearance: Inactive Secret</li>
-            </ul>
+            <div class="skills flex justify-start items-center flex-wrap">
+                <!-- Skill Icons with Tooltips -->
+                <div class="tooltip">
+                    <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python">
+                    <span class="tooltiptext">Python</span>
+                </div>
+                <div class="tooltip">
+                    <img src="https://img.icons8.com/color/48/000000/matlab.png" alt="MATLAB">
+                    <span class="tooltiptext">MATLAB</span>
+                </div>
+                <div class="tooltip">
+                    <img src="https://img.icons8.com/color/48/000000/microsoft.png" alt="Microsoft Office">
+                    <span class="tooltiptext">Microsoft Office</span>
+                </div>
+                <!-- Add additional icons following this format -->
+            </div>
         </section>
 
         <!-- Awards Section -->
         <section class="section">
             <h2 class="text-3xl font-semibold mb-4">Awards</h2>
-            <ul>
+            <ul class="list-disc ml-8">
                 <li>General Atomics Spotlight Award for innovation and mission execution.</li>
                 <li>Orion Program Manager’s Commendation for contributions to Orion Exploratory Mission 1.</li>
             </ul>
         </section>
-
     </div>
 </body>
 </html>
