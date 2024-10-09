@@ -3,36 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thaddeus Jones</title>
+    <title>Thaddeus Jones - Personal Site</title>
+    <!-- Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #2f4f4f; /* Dark slate gray */
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-        }
-        .section {
-            background-color: #4f4f4f; /* Medium gray box */
-            padding: 30px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        .flex-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
-        .skills img {
-            width: 50px;
-            margin: 10px;
-            transition: transform 0.3s;
-        }
-        .skills img:hover {
-            transform: scale(1.1);
-        }
         .tooltip {
             position: relative;
             display: inline-block;
+            cursor: pointer;
         }
         .tooltip .tooltiptext {
             visibility: hidden;
@@ -56,36 +34,36 @@
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-700 text-gray-200 font-sans">
 
-    <!-- Summary Section -->
     <div class="container mx-auto p-4">
-        <section class="section">
-            <h1 class="text-4xl font-bold text-center mb-4">Thaddeus Jones</h1>
-            <p class="text-center">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank" class="text-blue-400">LinkedIn</a></p>
-            <p class="mt-4">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions. I have previously led system engineering efforts for small satellite programs and have experience testing crewed deep space vehicles and missile systems.</p>
+        <!-- Summary Section -->
+        <section class="bg-gray-600 p-6 rounded-lg my-4 text-center">
+            <h1 class="text-4xl font-bold">Thaddeus Jones</h1>
+            <p class="mt-2">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" class="text-blue-400 hover:underline" target="_blank">LinkedIn</a></p>
+            <p class="mt-4">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions.</p>
         </section>
 
         <!-- Experience Section -->
-        <section class="section">
+        <section class="bg-gray-600 p-6 rounded-lg my-4">
             <h2 class="text-3xl font-semibold mb-4">Experience</h2>
-            
+
             <!-- Lockheed Martin -->
-            <div class="flex-container">
+            <div class="flex justify-between items-baseline mb-2">
                 <h3 class="text-2xl">Lockheed Martin - Space Systems Architect</h3>
                 <span class="text-gray-400">Jun 2022 - Present</span>
             </div>
-            <ul class="list-disc ml-8 mt-2">
+            <ul class="list-disc ml-6">
                 <li>Leading several large deep space exploration proposal efforts.</li>
                 <!-- Add more bullet points as needed -->
             </ul>
 
             <!-- General Atomics -->
-            <div class="flex-container mt-6">
+            <div class="flex justify-between items-baseline mt-6 mb-2">
                 <h3 class="text-2xl">General Atomics - Deputy Chief Engineer</h3>
                 <span class="text-gray-400">Oct 2021 – Jun 2022</span>
             </div>
-            <ul class="list-disc ml-8 mt-2">
+            <ul class="list-disc ml-6">
                 <li>Led engineering efforts, maintaining system budgets and requirements.</li>
                 <!-- Add more bullet points as needed -->
             </ul>
@@ -93,35 +71,35 @@
         </section>
 
         <!-- Education Section -->
-        <section class="section">
+        <section class="bg-gray-600 p-6 rounded-lg my-4">
             <h2 class="text-3xl font-semibold mb-4">Education</h2>
-            <div class="flex-container">
+            <div class="flex justify-between items-baseline mb-2">
                 <h3 class="text-xl">MS - Space Systems Engineering, Johns Hopkins University</h3>
                 <span class="text-gray-400">Dec 2020</span>
             </div>
             <p class="text-gray-400">Graduated with Distinction</p>
 
-            <div class="flex-container mt-4">
+            <div class="flex justify-between items-baseline mt-4">
                 <h3 class="text-xl">BSE - Mechanical Engineering & Material Science, Duke University</h3>
                 <span class="text-gray-400">May 2015</span>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section class="section">
+        <section class="bg-gray-600 p-6 rounded-lg my-4">
             <h2 class="text-3xl font-semibold mb-4">Skills</h2>
-            <div class="skills flex justify-start items-center flex-wrap">
+            <div class="flex flex-wrap">
                 <!-- Skill Icons with Tooltips -->
-                <div class="tooltip">
-                    <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python">
+                <div class="tooltip m-2">
+                    <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python" class="w-12 h-12">
                     <span class="tooltiptext">Python</span>
                 </div>
-                <div class="tooltip">
-                    <img src="https://img.icons8.com/color/48/000000/matlab.png" alt="MATLAB">
+                <div class="tooltip m-2">
+                    <img src="https://img.icons8.com/color/48/000000/matlab.png" alt="MATLAB" class="w-12 h-12">
                     <span class="tooltiptext">MATLAB</span>
                 </div>
-                <div class="tooltip">
-                    <img src="https://img.icons8.com/color/48/000000/microsoft.png" alt="Microsoft Office">
+                <div class="tooltip m-2">
+                    <img src="https://img.icons8.com/color/48/000000/microsoft.png" alt="Microsoft Office" class="w-12 h-12">
                     <span class="tooltiptext">Microsoft Office</span>
                 </div>
                 <!-- Add additional icons following this format -->
@@ -129,9 +107,9 @@
         </section>
 
         <!-- Awards Section -->
-        <section class="section">
+        <section class="bg-gray-600 p-6 rounded-lg my-4">
             <h2 class="text-3xl font-semibold mb-4">Awards</h2>
-            <ul class="list-disc ml-8">
+            <ul class="list-disc ml-6">
                 <li>General Atomics Spotlight Award for innovation and mission execution.</li>
                 <li>Orion Program Manager’s Commendation for contributions to Orion Exploratory Mission 1.</li>
             </ul>
