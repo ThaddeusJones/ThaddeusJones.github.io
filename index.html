@@ -3,117 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thaddeus Jones - Personal Site</title>
-    <!-- Tailwind CSS -->
+    <title>Thaddeus Jones</title>
+    <!-- Link to Inter var Font via CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom Inline CSS -->
     <style>
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
+        body {
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            background-color: #333333; /* Charcoal gray for the whole page */
+            color: #ffffff; /* White text */
+            display: flex;
+            justify-content: center;
+            padding: 80px;
         }
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 120px;
-            background-color: #4f4f4f;
-            color: #e0e0e0;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            border-radius: 8px;
         }
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
+        .left-column {
+            width: 50%; /* Widen the left column */
+            padding: 30px;
+            background-color: #333333;
+        }
+        .name-title {
+            font-size: 3rem; /* Make the name larger */
+            font-weight: bold;
+        }
+        .left-column-icons {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .left-column-icons a {
+            margin-right: 15px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+        .right-column {
+            width: 50%;
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(100vh - 80px);
+        }
+        .company-experience {
+            margin-bottom: 30px;
+        }
+        .company-name {
+            color: #ffffff;
+            margin-bottom: 4px;
+            margin-left: 25%; /* Indent company name to align with the role content */
+        }
+        .role-group {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+        .experience-date {
+            width: 20%; /* Fixed width for date column */
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            text-align: left;
+        }
+        .role-content {
+            width: 75%;
+            margin-left: 5%;
+        }
+        .role-title {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .role-description {
+            color: #d3d3d3;
+        }
+        .right-column {
+            width: 70%;
+            padding: 30px;
+            overflow-y: scroll; /* Enable vertical scroll without showing scrollbar */
+            max-height: calc(100vh - 80px);
+
+            /* Hide scrollbar in Webkit browsers (Chrome, Safari) */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .right-column::-webkit-scrollbar {
+            display: none; /* Chrome, Safari */
         }
     </style>
 </head>
-<body class="bg-slate-700 text-gray-200 font-sans">
+<body>
 
-    <div class="container mx-auto p-4">
-        <!-- Summary Section -->
-        <section class="bg-gray-600 p-6 rounded-lg my-4 text-center">
-            <h1 class="text-4xl font-bold">Thaddeus Jones</h1>
-            <p class="mt-2">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" class="text-blue-400 hover:underline" target="_blank">LinkedIn</a></p>
-            <p class="mt-4">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions.</p>
-        </section>
-
-        <!-- Experience Section -->
-        <section class="bg-gray-600 p-6 rounded-lg my-4">
-            <h2 class="text-3xl font-semibold mb-4">Experience</h2>
-
-            <!-- Lockheed Martin -->
-            <div class="flex justify-between items-baseline mb-2">
-                <h3 class="text-2xl">Lockheed Martin - Space Systems Architect</h3>
-                <span class="text-gray-400">Jun 2022 - Present</span>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Column -->
+        <div class="left-column">
+            <div class="name-title">Thaddeus Jones</div>
+            <div class="role-title">Space Systems Architect</div>
+            <div class="role-description">
+                Leading the development of spacecraft architectures for deep space exploration missions.
             </div>
-            <ul class="list-disc ml-6">
-                <li>Leading several large deep space exploration proposal efforts.</li>
-                <!-- Add more bullet points as needed -->
-            </ul>
-
-            <!-- General Atomics -->
-            <div class="flex justify-between items-baseline mt-6 mb-2">
-                <h3 class="text-2xl">General Atomics - Deputy Chief Engineer</h3>
-                <span class="text-gray-400">Oct 2021 – Jun 2022</span>
+            
+            <!-- Icons for LinkedIn and Resume Download -->
+            <div class="left-column-icons">
+                <!-- LinkedIn Icon -->
+                <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/linkedin.png" alt="LinkedIn" width="36" height="36">
+                </a>
+                
+                <!-- Download Icon -->
+                <a href="assets/ThaddeusJones_Resume_2024.pdf" class="download-button" download>
+                    <img src="https://img.icons8.com/?size=100&id=23877&format=png&color=ffffff" alt="Download Resume" width="36" height="36">
+                </a>
             </div>
-            <ul class="list-disc ml-6">
-                <li>Led engineering efforts, maintaining system budgets and requirements.</li>
-                <!-- Add more bullet points as needed -->
-            </ul>
-            <!-- Additional positions follow the same structure -->
-        </section>
+        </div>
 
-        <!-- Education Section -->
-        <section class="bg-gray-600 p-6 rounded-lg my-4">
-            <h2 class="text-3xl font-semibold mb-4">Education</h2>
-            <div class="flex justify-between items-baseline mb-2">
-                <h3 class="text-xl">MS - Space Systems Engineering, Johns Hopkins University</h3>
-                <span class="text-gray-400">Dec 2020</span>
-            </div>
-            <p class="text-gray-400">Graduated with Distinction</p>
+        <!-- Right Column -->
+        <div class="right-column">
+            <!-- Experience Section -->
 
-            <div class="flex justify-between items-baseline mt-4">
-                <h3 class="text-xl">BSE - Mechanical Engineering & Material Science, Duke University</h3>
-                <span class="text-gray-400">May 2015</span>
-            </div>
-        </section>
+            <!-- Company Experience -->
+            <div class="company-experience">
+                <div class="company-name">Lockheed Martin</div>
 
-        <!-- Skills Section -->
-        <section class="bg-gray-600 p-6 rounded-lg my-4">
-            <h2 class="text-3xl font-semibold mb-4">Skills</h2>
-            <div class="flex flex-wrap">
-                <!-- Skill Icons with Tooltips -->
-                <div class="tooltip m-2">
-                    <img src="https://img.icons8.com/color/48/000000/python.png" alt="Python" class="w-12 h-12">
-                    <span class="tooltiptext">Python</span>
+                <!-- Role Group -->
+                <div class="role-group">
+                    <div class="experience-date">Jun 2022 - Present</div>
+                    <div class="role-content">
+                        <div class="role-title">Space Systems Architect</div>
+                        <div class="role-description">
+                            I lead an engineering team to develop spacecraft concepts for deep space exploration missions. In this role I develop architectures for complex, multi-system vehicles and lead a team of engineers to develop and analyze these architectures. 
+                            I also define mission technical requirements and CONOPS, and perform system level trade studies. As the technical lead I identify technical, cost, and schedule risks and mitigation strategies. 
+                            Finally I write and present the technical review packages to our customers.
+                        </div>
+                    </div>
                 </div>
-                <div class="tooltip m-2">
-                    <img src="https://img.icons8.com/color/48/000000/matlab.png" alt="MATLAB" class="w-12 h-12">
-                    <span class="tooltiptext">MATLAB</span>
-                </div>
-                <div class="tooltip m-2">
-                    <img src="https://img.icons8.com/color/48/000000/microsoft.png" alt="Microsoft Office" class="w-12 h-12">
-                    <span class="tooltiptext">Microsoft Office</span>
-                </div>
-                <!-- Add additional icons following this format -->
             </div>
-        </section>
 
-        <!-- Awards Section -->
-        <section class="bg-gray-600 p-6 rounded-lg my-4">
-            <h2 class="text-3xl font-semibold mb-4">Awards</h2>
-            <ul class="list-disc ml-6">
-                <li>General Atomics Spotlight Award for innovation and mission execution.</li>
-                <li>Orion Program Manager’s Commendation for contributions to Orion Exploratory Mission 1.</li>
-            </ul>
-        </section>
+            <!-- Another Company Experience -->
+            <div class="company-experience">
+                <div class="company-name">General Atomics</div>
+
+                <!-- Role Group -->
+                <div class="role-group">
+                    <div class="experience-date">Oct 2021 - Jun 2022</div>
+                    <div class="role-content">
+                        <div class="role-title">Deputy Chief Engineer</div>
+                        <div class="role-description">
+                            Led and reviewed the engineering efforts of a team of systems engineers, maintaining system 
+                            budgets, requirement flow-down, and artifact generation.
+                            Defined system CONOPS during all phases of the mission (LEOP, operations, fault recovery, 
+                            collision avoidance, deorbit).
+                            Managed the subcontracts to complete the design of a US Space Force (USSF) satellite. 
+                            Presented the spacecraft architecture and technical design in milestone reviews to the USSF.
+                            Developed Monte Carlo simulations in Python to determine satellite constellation reliability.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another Role Group -->
+                <div class="role-group">
+                    <div class="experience-date">Jun 2019 - Oct 2021</div>
+                    <div class="role-content">
+                        <div class="role-title">Lead Systems Engineer</div>
+                        <div class="role-description">
+                            Managed a spacecraft’s system requirement specification, defining requirements, verification
+                            methods, approaches, and artifacts for each requirement.
+                            Wrote and delivered to NASA the Verification & Validation Plan, Telemetry Database, AI&T Plan, 
+                            and Spacecraft Operations Plan for a spacecraft program.
+                            Developed the Interface Control Documents (ICDs) between the spacecraft and NASA payload.
+                            Led weekly technical working groups with the NASA customer.
+                            Presented the spacecraft architecture and technical solution in milestone reviews.
+                            Oversaw the development of a spacecraft simulator for delivery to NASA.
+                            Analyzed ground station contact duration in STK for a complex spacecraft/antenna geometry, and 
+                            wrote scripts in MATLAB to interpret the data. 
+                            Operated the OTB-1 spacecraft on-orbit, including during fault recovery
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Another Company Experience -->
+            <div class="company-experience">
+                <div class="company-name">Lockheed Martin</div>
+
+                <!-- Role Group -->
+                <div class="role-group">
+                    <div class="experience-date">Dec 2017 – Jun 2019</div>
+                    <div class="role-content">
+                        <div class="role-title">Spacecraft Systems Engineer</div>
+                        <div class="role-description">
+                            Developed and tested Orion spacecraft mission cases, integrating spacecraft hardware and 
+                            software in the lab. 
+                            Wrote high quality test procedures, test reports, and discrepancy documentation to support all 
+                            mission testing efforts for the Orion spacecraft. 
+                            Scripted fault scenarios for the software and hardware using Python.
+                            Responsible for all mission entry tests and all Fault Detection, Isolation, and Recovery (FDIR) tests
+                            for the Artemis-1 mission.
+                            Conducted full Run-for-Record tests for NASA stakeholders to validate requirements.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Another Role Group -->
+                <div class="role-group">
+                    <div class="experience-date">Jun 2015 – Dec 2017</div>
+                    <div class="role-content">
+                        <div class="role-title">Systems Engineer</div>
+                        <div class="role-description">
+                            Installed and tested the AEGIS missile system on destroyers in Japan and South Korea as the lead 
+                            Weapon Control Systems (WCS) engineer.
+                            Led Change Review Boards with the Japanese and S. Korean Navies.
+                            Passed thousands of regression requirements for foreign and domestic AEGIS defense programs.
+                            Wrote new requirements, specification changes, and test procedures in DOORS.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education Section -->
+            <div class="company-experience">
+                <div class="company-name">Johns Hopkins University</div>
+                <div class="role-group">
+                    <div class="experience-date">Dec 2020</div>
+                    <div class="role-content">
+                        <div class="role-title">MS - Space Systems Engineering</div>
+                        <div class="role-description subtext">Graduated with Distinction.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="company-experience">
+                <div class="company-name">Duke University</div>
+                <div class="role-group">
+                    <div class="experience-date">May 2015</div>
+                    <div class="role-content">
+                        <div class="role-title">BSE - Mechanical Engineering & Material Science</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <h2 class="text-3xl font-semibold mt-8 mb-4">Skills</h2>
+            <div class="company-experience">
+                <div class="role-group">
+                    <div class="experience-date"></div>
+                    <div class="role-content">
+                        Engineering Software: SolidWorks, MATLAB, Python, AGI STK, DOORS, SPICE, CAMEO. Computer Skills: Unix/Linux, Microsoft Office, Atlassian Suite (Confluence, JIRA), Windchill.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Awards Section -->
+            <h2 class="text-3xl font-semibold mt-8 mb-4">Awards</h2>
+            <div class="company-experience">
+                <div class="role-group">
+                    <div class="experience-date"></div>
+                    <div class="role-content">
+                        General Atomics Spotlight Award for innovation and mission execution. Orion Program Manager’s Commendation for contributions to Orion Exploratory Mission 1.
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 </body>
 </html>
