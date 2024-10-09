@@ -3,162 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thaddeus Jones</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: #0779e4 3px solid;
-        }
-        header h1 {
-            text-align: center;
-            text-transform: uppercase;
-            margin: 0;
-        }
-        .content {
-            padding: 20px;
-        }
-        h2, h3 {
-            color: #333;
-        }
-        p, ul {
-            line-height: 1.6;
-        }
-        ul {
-            list-style-type: none;
-        }
-        .contact-info {
-            text-align: center;
-            margin: 20px 0;
-        }
-    </style>
+    <title>Thaddeus Jones - Resume</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Thaddeus Jones</h1>
-        </div>
-    </header>
-    <div class="container content">
-        <div class="contact-info">
-            <p>(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank">LinkedIn</a></p>
-        </div>
-        <h2>Professional Summary</h2>
-        <p>Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions. I have previously led system engineering efforts for small satellite programs and have experience testing crewed deep space vehicles and missile systems.</p>
-        
-        <h2>Experience</h2>
-        <h3>Lockheed Martin - Space Systems Architect</h3>
-        <p>Jun 2022 - Present</p>
-        <ul>
-            <li>Leading several large deep space exploration proposal efforts. As the lead architect I am:
-                o Developing architectures for complex, multi-system deep space vehicles
-                o Leading a team of engineers to develop performance budgets and the spacecraft models
-                o Defining mission technical requirements and mission CONOPS
-                o Capturing and performing system level trade studies
-                o Identifying technical, cost, and schedule risks and mitigation strategies
-                o Writing and presenting technical review packages to our NASA partners
-                • Developing the LM deep space smallsat strategy, defining growth areas and enabling technologies
-                • Leading an IRAD flight demonstration mission from concept through mission operations
-                • Won and now executing a DoD lunar smallsat mission as spacecraft lead
-                • Architected and delivered a proposal for a $1B NASA astrophysics probe RFP
-                • Designed a low-cost Mars lander solution as part of a JPL study</li>
-                
-        </ul>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <div class="container mx-auto p-8 max-w-4xl bg-white shadow-md rounded-lg">
+        <header class="text-center py-4 border-b-2 border-indigo-600">
+            <h1 class="text-4xl font-bold text-indigo-600">Thaddeus Jones</h1>
+            <p class="text-gray-600 mt-2">(703) 350 5832 · JonesThaddeus0@gmail.com · <a href="https://www.linkedin.com/in/thaddeus-jones/" class="text-blue-500" target="_blank">LinkedIn</a></p>
+        </header>
 
-        <h3>General Atomics - Deputy Chief Engineer</h3>
-        <p>Oct 2021 – Jun 2022</p>
-        <ul>
-            <li>• Led and reviewed the engineering efforts of a team of systems engineers, maintaining system 
-                budgets, requirement flow-down, and artifact generation.
-                • Defined system CONOPS during all phases of the mission (LEOP, operations, fault recovery, 
-                collision avoidance, deorbit).
-                • Managed the subcontracts to complete the design of a US Space Force (USSF) satellite. 
-                • Presented the spacecraft architecture and technical design in milestone reviews to the USSF.
-                • Developed Monte Carlo simulations in Python to determine satellite constellation reliability. </li>
-            
-        </ul>
+        <section class="mt-6">
+            <h2 class="text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-1">Professional Summary</h2>
+            <p class="mt-2">Space Systems Architect with nearly a decade of systems engineering experience and a Master’s degree in space systems engineering. I lead engineering teams in designing spacecraft and solutions for complex deep space exploration missions. I have previously led system engineering efforts for small satellite programs and have experience testing crewed deep space vehicles and missile systems.</p>
+        </section>
 
-        <h3>Lead Spacecraft Systems Engineer</h3>
-        <p>Oct 2021 – Jun 2022</p>
-        <ul>
-            <li>• Managed a spacecraft’s system requirement specification, defining requirements, verification
-                methods, approaches, and artifacts for each requirement.
-                • Wrote and delivered to NASA the Verification & Validation Plan, Telemetry Database, AI&T Plan, 
-                and Spacecraft Operations Plan for a spacecraft program.
-                • Developed the Interface Control Documents (ICDs) between the spacecraft and NASA payload.
-                • Led weekly technical working groups with the NASA customer.
-                • Presented the spacecraft architecture and technical solution in milestone reviews.
-                • Oversaw the development of a spacecraft simulator for delivery to NASA.
-                • Analyzed ground station contact duration in STK for a complex spacecraft/antenna geometry, and 
-                wrote scripts in MATLAB to interpret the data. 
-                • Operated the OTB-1 spacecraft on-orbit, including during fault recovery
-                 </li>
-            
-        </ul>
+        <section class="mt-6">
+            <h2 class="text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-1">Experience</h2>
 
-        <h3>Lockheed Martin - Spacecraft Systems Engineer</h3>
-        <p>DEC 2017 – JUN 2019</p>
-        <ul>
-            <li>• Developed and tested Orion spacecraft mission cases, integrating spacecraft hardware and 
-                software in the lab. 
-                • Wrote high quality test procedures, test reports, and discrepancy documentation to support all 
-                mission testing efforts for the Orion spacecraft. 
-                • Scripted fault scenarios for the software and hardware using Python.
-                • Responsible for all mission entry tests and all Fault Detection, Isolation, and Recovery (FDIR) tests
-                for the Artemis-1 mission.
-                • Conducted full Run-for-Record tests for NASA stakeholders to validate requirements. </li>
-            
-        </ul>
+            <!-- Lockheed Martin Section -->
+            <h3 class="text-xl font-semibold text-gray-800 mt-4">Lockheed Martin</h3>
 
-        <h3>Systems Engineer</h3>
-        <p>JUN 2015 – DEC 2017</p>
-        <ul>
-            <li>• Installed and tested the AEGIS missile system on destroyers in Japan and South Korea as the lead 
-                Weapon Control Systems (WCS) engineer.
-                • Led Change Review Boards with the Japanese and S. Korean Navies.
-                • Passed thousands of regression requirements for foreign and domestic AEGIS defense programs.
-                • Wrote new requirements, specification changes, and test procedures in DOORS.
-                 </li>
-            
-        </ul>
+            <div class="flex justify-between mt-2">
+                <h4 class="text-lg font-medium">Space Systems Architect</h4>
+                <span class="text-gray-500">Jun 2022 - Present</span>
+            </div>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Leading several large deep space exploration proposal efforts.</li>
+                <li>Developing architectures for complex, multi-system deep space vehicles.</li>
+                <li>Defining mission technical requirements and mission CONOPS.</li>
+                <li>Performing system level trade studies and identifying risks.</li>
+                <li>Writing and presenting technical review packages to NASA partners.</li>
+                <li>Developing the LM deep space smallsat strategy and leading an IRAD flight mission.</li>
+                <li>Won and now executing a DoD lunar smallsat mission as spacecraft lead.</li>
+                <li>Architected a $1B NASA astrophysics probe proposal and designed a Mars lander solution.</li>
+            </ul>
 
+            <div class="flex justify-between mt-4">
+                <h4 class="text-lg font-medium">Spacecraft Systems Engineer</h4>
+                <span class="text-gray-500">Dec 2017 – Jun 2019</span>
+            </div>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Developed and tested Orion spacecraft mission cases, integrating hardware and software.</li>
+                <li>Scripted fault scenarios using Python and conducted mission entry tests for Artemis-1.</li>
+                <li>Wrote test procedures, reports, and documentation for Orion mission testing.</li>
+                <li>Ran Run-for-Record tests for NASA to validate requirements.</li>
+            </ul>
 
+            <!-- General Atomics Section -->
+            <h3 class="text-xl font-semibold text-gray-800 mt-4">General Atomics</h3>
 
-        <h2>Education</h2>
-        <h3>MS - Space Systems Engineering, Johns Hopkins University</h3>
-        <p>Dec 2020 | Graduated with Distinction</p>
+            <div class="flex justify-between mt-2">
+                <h4 class="text-lg font-medium">Deputy Chief Engineer</h4>
+                <span class="text-gray-500">Oct 2021 – Jun 2022</span>
+            </div>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Led engineering efforts, maintaining system budgets and requirement flow-down.</li>
+                <li>Defined system CONOPS for various mission phases and managed subcontracts.</li>
+                <li>Presented technical designs in milestone reviews to the US Space Force (USSF).</li>
+                <li>Developed Monte Carlo simulations in Python to evaluate constellation reliability.</li>
+            </ul>
 
-        <h3>BSE - Mechanical Engineering & Material Science, Duke University</h3>
-        <p>May 2015</p>
+            <div class="flex justify-between mt-4">
+                <h4 class="text-lg font-medium">Lead Spacecraft Systems Engineer</h4>
+                <span class="text-gray-500">Jun 2019 – Oct 2021</span>
+            </div>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Managed spacecraft system requirements and delivered key plans to NASA.</li>
+                <li>Developed Interface Control Documents and led technical working groups with NASA.</li>
+                <li>Oversaw spacecraft simulator development and performed contact duration analysis in STK.</li>
+                <li>Operated the OTB-1 spacecraft on-orbit during fault recovery.</li>
+            </ul>
 
-        <h2>Skills</h2>
-        <ul>
-            <li>Engineering Software: SolidWorks, MATLAB, Python, AGI STK, DOORS, SPICE, CAMEO</li>
-            <li>Computer Skills: Unix/Linux, Microsoft Office, Atlassian Suite (Confluence, JIRA), Windchill</li>
-            <li>Security Clearance: Inactive Secret</li>
-            
-        </ul>
+            <!-- Early Lockheed Martin Role -->
+            <div class="flex justify-between mt-4">
+                <h4 class="text-lg font-medium">Systems Engineer</h4>
+                <span class="text-gray-500">Jun 2015 – Dec 2017</span>
+            </div>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Installed and tested the AEGIS missile system on destroyers in Japan and South Korea.</li>
+                <li>Led Change Review Boards with Japanese and South Korean Navies.</li>
+                <li>Passed regression requirements for AEGIS defense programs and created test procedures in DOORS.</li>
+            </ul>
+        </section>
 
-        <h2>Awards</h2>
-        <ul>
-            <li>GENERAL ATOMICS SPOTLIGHT AWARD
-                From the GA Director of Space Systems for “Innovation and tireless execution of the mission”</li>
-            <li>ORION PROGRAM MANAGER’S COMMENDATION
-                From the NASA Orion Program Manager for “significant contributions to Orion Exploratory Mission 1</li>
-        </ul>
+        <section class="mt-6">
+            <h2 class="text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-1">Education</h2>
+            <h3 class="text-lg font-medium mt-4">MS - Space Systems Engineering, Johns Hopkins University</h3>
+            <p class="text-gray-500">Dec 2020 | Graduated with Distinction</p>
+            <h3 class="text-lg font-medium mt-4">BSE - Mechanical Engineering & Material Science, Duke University</h3>
+            <p class="text-gray-500">May 2015</p>
+        </section>
+
+        <section class="mt-6">
+            <h2 class="text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-1">Skills</h2>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>Engineering Software: SolidWorks, MATLAB, Python, AGI STK, DOORS, SPICE, CAMEO</li>
+                <li>Computer Skills: Unix/Linux, Microsoft Office, Atlassian Suite (Confluence, JIRA), Windchill</li>
+                <li>Security Clearance: Inactive Secret</li>
+            </ul>
+        </section>
+
+        <section class="mt-6">
+            <h2 class="text-2xl font-semibold text-gray-700 border-b border-gray-300 pb-1">Awards</h2>
+            <ul class="list-disc ml-8 text-gray-700 mt-2">
+                <li>General Atomics Spotlight Award for innovation and tireless execution of the mission.</li>
+                <li>Orion Program Manager’s Commendation for contributions to Orion Exploratory Mission 1.</li>
+            </ul>
+        </section>
     </div>
 </body>
 </html>
