@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thaddeus Jones</title>
+    <title>Writing — Thaddeus Jones</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -18,6 +18,7 @@
             --text-muted: #4a4a4a;
             --link-color: #1a1a1a;
             --nav-hover-opacity: 0.6;
+            --border-color: #e5e5e5;
         }
         
         html.dark-mode {
@@ -26,6 +27,7 @@
             --text-muted: #888;
             --link-color: #ffffff;
             --nav-hover-opacity: 0.7;
+            --border-color: #333;
         }
         
         html.space-mode {
@@ -34,6 +36,7 @@
             --text-muted: #aaaaaa;
             --link-color: #ffffff;
             --nav-hover-opacity: 0.7;
+            --border-color: #333;
         }
         
         body {
@@ -204,43 +207,75 @@
         h1 {
             font-size: 32px;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 40px;
             line-height: 1.2;
             color: var(--text-color);
         }
         
-        .bio {
-            font-size: 16px;
-            line-height: 1.7;
+        .posts {
+            list-style: none;
+        }
+        
+        .post-item {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .post-item:last-child {
+            border-bottom: none;
+        }
+        
+        .post-item a {
+            color: var(--link-color);
+            text-decoration: none;
+            display: block;
+        }
+        
+        .post-item a:hover {
+            opacity: var(--nav-hover-opacity);
+        }
+        
+        .post-date {
+            font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: 40px;
+            margin-bottom: 8px;
         }
         
-        .bio p {
-            margin-bottom: 16px;
+        .post-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            color: var(--text-color);
         }
         
-        .bio a {
+        .post-category {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 40px;
+        }
+        
+        .empty-state a {
             color: var(--link-color);
             text-decoration: none;
         }
         
-        .bio a:hover {
+        .empty-state a:hover {
             text-decoration: underline;
         }
         
-        .contact {
-            margin-top: 40px;
-            font-size: 16px;
-            color: var(--text-muted);
-        }
-        
-        .contact a {
+        /* General styling for in-text links in content areas */
+        .container p a {
             color: var(--link-color);
             text-decoration: none;
         }
         
-        .contact a:hover {
+        .container p a:hover {
             text-decoration: underline;
         }
         
@@ -350,36 +385,36 @@
     <div class="container">
         <nav>
             <ul>
-                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="missions.html">Missions</a></li>
                 <li><a href="projects.html">Projects</a></li>
-                <li><a href="writing.html">Writing</a></li>
+                <li><a href="writing.html" class="active">Writing</a></li>
                 <li><a href="mailto:jonesthaddeus0@gmail.com">Email</a></li>
             </ul>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
                 <svg id="themeIcon" viewBox="0 0 24 24" fill="currentColor">
-                    <!-- Sun icon (light mode) -->
-                    <path id="sunIcon" d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
                 </svg>
             </button>
         </nav>
         
-        <h1>Hi, I'm Thad!</h1>
+        <h1>Writing</h1>
         
-        <div class="bio">
-            <p>
-                I architect space systems. I have led programs for NASA and the US Space Force, and designed spacecraft architectures for LEO, the moon, Mars, and beyond. You can find some of my past missions <a href="missions.html">here</a>.
-            </p>
-            <p>
-                Currently I am at Lockheed Martin leading development of mission concepts for deep space.
-            </p>
-            <p>
-                I am really interested in how humanity becomes a truly spacefaring species - and what technologies are needed to achieve it.
-            </p>
-        </div>
+        <ul class="posts">
+            <!-- Posts will be added here as you create them -->
+            <!-- Example structure:
+            <li class="post-item">
+                <a href="writing/your-post-title.html">
+                    <div class="post-date">Jan 15, 2024</div>
+                    <div class="post-title">Your Post Title</div>
+                    <div class="post-category">—essays</div>
+                </a>
+            </li>
+            -->
+        </ul>
         
-        <div class="contact">
-            <p>The best way to get in touch with me is via <a href="mailto:jonesthaddeus@gmail.com">email</a> or <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank">LinkedIn</a>.</p>
+        <div class="empty-state">
+            <p>More writing coming soon.</p>
         </div>
     </div>
     
@@ -401,7 +436,7 @@
             </div>
         </div>
     </footer>
-    
     <script src="theme.js"></script>
 </body>
 </html>
+

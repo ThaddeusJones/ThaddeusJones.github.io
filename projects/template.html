@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Project Title — Thaddeus Jones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background-color: #ffffff;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        
+        nav {
+            margin-bottom: 40px;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        
+        nav a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 400;
+            transition: opacity 0.2s;
+        }
+        
+        nav a:hover {
+            opacity: 0.6;
+        }
+        
+        .back-link {
+            margin-bottom: 24px;
+        }
+        
+        .back-link a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .back-link a:hover {
+            color: #1a1a1a;
+        }
+        
+        .project-header {
+            margin-bottom: 32px;
+        }
+        
+        .project-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+        
+        .project-title {
+            font-size: 32px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+        
+        .project-category {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .project-content {
+            color: #4a4a4a;
+        }
+        
+        .project-content p {
+            margin-bottom: 20px;
+        }
+        
+        .project-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: #1a1a1a;
+        }
+        
+        .project-content h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        
+        .project-content ul,
+        .project-content ol {
+            margin-left: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .project-content li {
+            margin-bottom: 8px;
+        }
+        
+        .project-link {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e5e5;
+        }
+        
+        .project-link a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .project-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 24px 16px;
+            }
+            
+            .project-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../missions.html">Missions</a></li>
+                <li><a href="../projects.html">Projects</a></li>
+                <li><a href="../writing.html">Writing</a></li>
+                <li><a href="mailto:your-email@example.com">Email</a></li>
+            </ul>
+        </nav>
+        
+        <div class="back-link">
+            <a href="../projects.html">← Back to Projects</a>
+        </div>
+        
+        <article class="project-content">
+            <div class="project-header">
+                <div class="project-date">Jan 15, 2024</div>
+                <h1 class="project-title">Your Project Title</h1>
+                <div class="project-category">—projects</div>
+            </div>
+            
+            <div class="project-content">
+                <p>
+                    Your project description goes here. This is a template for creating new project pages.
+                </p>
+                
+                <h2>Overview</h2>
+                <p>
+                    Describe what the project is about, what problem it solves, or what you built.
+                </p>
+                
+                <h2>Technical Details</h2>
+                <p>
+                    Add technical information, technologies used, challenges faced, etc.
+                </p>
+                
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Feature one</li>
+                    <li>Feature two</li>
+                    <li>Feature three</li>
+                </ul>
+            </div>
+            
+            <div class="project-link">
+                <a href="#" target="_blank">View Project →</a>
+            </div>
+        </article>
+    </div>
+</body>
+</html>
+

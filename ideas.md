@@ -1,0 +1,5 @@
+- The tools I use
+- AI in spacecraft design
+- Saturn radiation? 
+- Is heritage holding us back
+- Human vs Robot space complexity threshold
