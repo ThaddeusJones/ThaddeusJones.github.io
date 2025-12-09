@@ -12,11 +12,15 @@
             box-sizing: border-box;
         }
         
+        html {
+            scrollbar-gutter: stable;
+        }
+        
         :root {
             --bg-color: #ffffff;
             --text-color: #1a1a1a;
             --text-muted: #4a4a4a;
-            --link-color: #1a1a1a;
+            --link-color: #2563eb;
             --nav-hover-opacity: 0.6;
             --border-color: #e5e5e5;
         }
@@ -25,7 +29,7 @@
             --bg-color: #1a1a1a;
             --text-color: #ffffff;
             --text-muted: #888;
-            --link-color: #ffffff;
+            --link-color: #60a5fa;
             --nav-hover-opacity: 0.7;
             --border-color: #333;
         }
@@ -34,7 +38,7 @@
             --bg-color: #000000;
             --text-color: #ffffff;
             --text-muted: #aaaaaa;
-            --link-color: #ffffff;
+            --link-color: #60a5fa;
             --nav-hover-opacity: 0.7;
             --border-color: #333;
         }
@@ -562,7 +566,7 @@
             background-color: transparent;
             color: var(--text-muted);
             margin-top: 80px;
-            padding: 60px 0 0;
+            padding: 60px 0 40px;
             position: relative;
             z-index: 1;
         }
@@ -571,32 +575,47 @@
             max-width: 680px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 40px;
+            flex-direction: column;
+            gap: 8px;
         }
         
-        .footer-left {
+        .footer-row {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 40px;
         }
         
         .footer-site-name {
             font-size: 18px;
             font-weight: 500;
             color: var(--text-color);
+            line-height: 1;
+        }
+        
+        .footer-site-name a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        
+        .footer-site-name a:hover {
+            opacity: var(--nav-hover-opacity);
         }
         
         .footer-social {
             display: flex;
             gap: 16px;
+            align-items: center;
         }
         
         .footer-social a {
             color: var(--text-muted);
             text-decoration: none;
             transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .footer-social a:hover {
@@ -607,23 +626,20 @@
             width: 20px;
             height: 20px;
             fill: currentColor;
-        }
-        
-        .footer-right {
-            text-align: right;
-            max-width: 400px;
+            display: block;
         }
         
         .footer-description {
             font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 12px;
+            line-height: 1;
             color: var(--text-muted);
+            text-align: right;
         }
         
         .footer-copyright {
             font-size: 14px;
             color: var(--text-muted);
+            line-height: 1;
         }
         
         .footer-copyright a {
@@ -636,11 +652,13 @@
         }
         
         @media (max-width: 768px) {
-            .footer-content {
+            .footer-row {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
             
-            .footer-right {
+            .footer-description {
                 text-align: left;
             }
         }
@@ -724,7 +742,13 @@
                             </div>
                         </div>
                         <div class="mission-description">
-                            We responded to a NASA RFI for the ARRIVAL aerocapture study and won the study effort. I was the spacecraft lead for the study, developing the architecture for the aeroshell and bus system. 
+                            <p>NASA put out the ARRIVAL study RFI in the fall of 2025 to develop an aerocapture demonstration concept. 
+                            <a href="https://en.wikipedia.org/wiki/Aerocapture">Aerocapture</a> is the process of using atmospheric drag to capture a spacecraft in orbit around a planet or moon from a hyperbolic trajectory. </p>
+                
+                            <p>We responded to the RFI and won the study contract. I was the system design lead for the study, developing the architecture for the flight (bus & aeroshell) system. 
+                            I led our engineering team to develop the spacecraft subsystems, driving system level requirements across the team, and identifying trade studies between subsystems, and managing the system performance budgets.
+                            I also presented the risks of the NASA-proposed CONOPS and potential opportunities the team and I identified for maturing the demonstration CONOPS. 
+                            </p>
                             
                         </div>
                     </div>
@@ -759,7 +783,7 @@
                         </div>
                         <div class="mission-description">
                             <p>In late 2024 I joined the <a href="https://carbon-i.github.io/">Carbon-I</a> proposal team as the mission architect, to guide coordination between the JPL mission team and LM spacecraft engineering team. </p>
-                            <p></p>My primary focus was on marrying the science operations with the spacecraft capabilities, especially the spacecraft guidance, navigation, and control (GNC) system, and the spacecraft power system. 
+                            <p>My primary focus was on marrying the science operations with the spacecraft capabilities, especially the spacecraft guidance, navigation, and control (GNC) system, and the spacecraft power system. 
                             While both systems were already well-defined and robust, the Carbon-I mission requires several unique observation modes. Capturing the exact needs and constraints of each mode and validating
                             the spacecraft capabilities was the key challenge. My other focus was on the system interfaces, between the instrument and the payload processor, and between the spacecraft and the ground.</p>
                             <p>I ended up developing and driving the power performance budget, and wrote the proposal sections for the mission design, the power subsystem, the GNC subsystem, and payload processor. 
@@ -934,8 +958,8 @@
                             given a one year timeline</a> to define the program, develop the spacecraft, and deliver the mission. Having learned my lesson in aligning customer expectations early from MAIA, 
                             I worked with GA leadership to define a very narrow set of mission requirements and success criteria - and passed System Requirements Review (SRR) in under two weeks.</p>
                             
-                            <p>But even an internally funded program is not immune to scope creep. Despite my best efforts to keep the program objectives narrow to achieve the breakneck timeline and budget, 
-                            additional payloads and objectives began to be pushed down from the executive team. I ended up leaving GA right around the time the scope changes were mandated, but the Manhattan program
+                            <p>But even an internally funded program is not immune to scope creep. Despite my efforts to freeze the program objectives early to achieve the breakneck timeline and budget, 
+                            the executive team began to push down additional payloads and objectives. I left GA around the time the scope changes were mandated, but the Manhattan program
                             has not yet launched to date. It appears that an iteration of the program may <a href="https://www.ga.com/ga-and-kepler-communications-successfully-demonstrate-air-to-space-optical-communications-capability#:~:text=%E2%80%9CUnder%20a%20separate%20SDA%20contract%2C%20GA%2DEMS%20designed%20and%20built%20two%20OCT%20systems%20that%20will%20fly%20on%20two%20GA%2D75%20spacecraft%20to%20support%20future%20LEO%20airborne%2Dto%2Dspace%20demonstrations%20for%20Tranche%201.%20Those%20spacecraft%20launch%20in%202026.%E2%80%9D">launch in 2026</a>.</p>
                         </div>
                     </div>
@@ -974,7 +998,7 @@
                             aging <a href="https://www.spaceforce.mil/About-Us/Fact-Sheets/Article/2197779/defense-meteorological-satellite-program/">DMSP satellites</a> and provide weather data for the US military. </p>
                             <p>The deputy chief engineer role was somewhat dual-hatted - because the chief engineer was located in San Diego while the rest of the engineering team was in Colorado,
                              I was both the lead systems engineer and led much of the day-to-day engineering management. In the role I defined system CONOPS across all mission phases, including LEOP, operations, fault recovery, 
-                            collision avoidance, and deorbit. Led and reviewed the engineering efforts of a team of systems engineers, maintaining system budgets, requirements, verification, interface control, and artifact generation. </p>
+                            collision avoidance, and deorbit. I led and reviewed the engineering efforts of a team of systems engineers, maintaining system budgets, requirements, verification, interface control, and artifact generation. </p>
                             <p>The EWS program was a competitive downselect, with General Atomics and Raytheon competing for the full contract award decision after CDR.
                             While Raytheon was an established incumbent, General Atomics had never delivered a spacecraft for the Space Force. I led the team through CDR, and General Atomics was awarded the contract. 
                             Since I've left, GA has won the award for a follow-on spacecraft. The first EWS satellite is expected to launch in 2026. </p>
@@ -1016,7 +1040,7 @@
                             as well as a number of other small payloads. With such a small team, I volunteered to moonlight as an operator for the mission. </p>
                             <p>Because OTB-1 was also carrying a payload for the Air Force, 
                             we were able to secure a free launch on a SpaceX Falcon Heavy launching out of the Kennedy Space Center. Our free ride meant that we were unable to define the mission orbit, and we ended up a 24° 
-                            inclination orbit passing through the <a href="https://en.wikipedia.org/wiki/South_Atlantic_Anomaly">South Atlantic Anomaly (SAA)</a> nearly every single orbit. This drove an high rate of single event upsets (SEUs)
+                            inclination orbit passing through the <a href="https://en.wikipedia.org/wiki/South_Atlantic_Anomaly">South Atlantic Anomaly (SAA)</a> nearly every single orbit. This drove a high rate of single event upsets (SEUs)
                             and faults at the spacecraft level.</p>
                             <p>As the operator, I monitored the spacecraft telemetry after scheduled downlinks, and I was automatically alerted if there was a missed pass or telemetry out of 
                             expected bounds. Over the three years I was at GA, I helped recover the spacecraft from safe mode a number of times, ran the DSAC through calibrations, and led a number of failure review boards (FRBs) to 
@@ -1106,15 +1130,15 @@
                             </div>
                         </div>
                         <div class="mission-description">
-                            <p>In late 2017 I moved from Lockheed Martin RMS to Lockheed Martin Space Systems to work on the Artemis I mission. I took on responsibility for testing the entire return cruise 
-                            through Entry, Descent, and Landing (EDL) of the Orion spacecraft. Working with the Orion subsystem engineers, I developed and executed test procedures for each phase of the return mission. </p>
+                            <p>In late 2017 I moved from Lockheed Martin RMS to Lockheed Martin Space Systems to work on the <a href="https://www.nasa.gov/mission/artemis-i/">Artemis I</a> mission. I took on responsibility for testing the entire return cruise 
+                            through Entry, Descent, and Landing (EDL) of the <a href="https://www.nasa.gov/reference/orion-spacecraft/">Orion spacecraft</a>. Working with the Orion subsystem engineers, I developed and executed test procedures for each phase of the return mission. </p>
                             <p>Return & EDL was a particularly fascinating mission segment, because the Orion spacecraft performs several critical subsystem "transitions" in this segment. First, as Orion approaches Earth it must transition its comms from 
                             the Deep Space Network (DSN) to the Tracking and Data Relay Satellite System (TDRSS). Second, Orion must separate its Crew Module (CM) from its Service Module (SM) prior to reentry. 
                             The SM has the solar arrays and the main engine, and so the spacecraft must hand-off from a power-positive flight to a fully battery-powered sequence. 
                             It also must transition from the SM main engine to the CM main engine for its final descent burns. Finally, Orion must execute a series of critical sequence of parachute deployments during descent. </p>
                             <p>These critical handoffs and deployment sequences were often autonomous dependent on the spacecraft configuration and measured data, so there was particular scrutiny on their execution in the test environment.
                             After writing the test procedures, fault mode scripts, and running the tests for hundreds of hours in the lab, I completed the tests for our NASA customer in the final Run for Record (RfR) tests. </p>
-                            <p>In 2022 Artemis I launched, completed its journey beyond the Moon, and returned to Earth safely.</p>
+                            <p>In 2022 Artemis I launched, completed its journey beyond the Moon, and <a href="https://www.space.com/artemis-1-orion-splashdown-moon-mission-success">returned to Earth safely</a>.</p>
 
                         </div>
                     </div>
@@ -1183,7 +1207,7 @@
                             </div>
                         </div>
                         <div class="mission-description">
-                            While working on the KDX program, I also supported the deployment of upgrades to the AEGIS J6 baseline for the Japanese Maritime Self-Defense Force's (JMSDF) Kongō-class destroyers. Just as I was the lead WCS engineer on KDX, I was the lead WCS engineer on J6.
+                            While working on the KDX program, I also supported the deployment of upgrades to the AEGIS J6 baseline for the Japanese Maritime Self-Defense Force's (JMSDF) <a href="https://en.wikipedia.org/wiki/Kong%C5%8D-class_destroyer">Kongō-class destroyers</a>. Just as I was the lead WCS engineer on KDX, I was the lead WCS engineer on J6.
                             I developed the requirements changes for the JMSDF customer, worked with our BAE software development partners to implement them in the software, and rigorously tested them and the system to ensure the WCS subsystem was fully compliant and did not impact other parts of the system.
                             I also went underway on DDG 177 in Japan to support the deployment of the upgrades.
                         </div>
@@ -1218,9 +1242,9 @@
                             </div>
                         </div>
                         <div class="mission-description">
-                            <p>My first job at Lockheed Martin was as a systems engineer on Foreign Military Sales (FMS) programs for the AEGIS missile defense system.
+                            <p>My first job at Lockheed Martin was as a systems engineer on Foreign Military Sales (FMS) programs for the <a href="https://www.lockheedmartin.com/en-us/products/aegis-combat-system.html">AEGIS missile defense system</a>.
                             My first program was KDX, where I became lead Weapon Control System (WCS) engineer supporting the deployment of AEGIS upgrades to the South Korean Navy.
-                            My primary responsibility was to capture requirement changes from the ROKN customer into software updates on the KDX AEGIS baseline,working with our BAE software development partners. 
+                            My primary responsibility was to capture requirement changes from the ROKN customer into software updates on the KDX AEGIS baseline, working with our BAE software development partners. 
                             It was my responsibility to accurately distill the requirement change the customer wanted, work with BAE to implement them in the software, and rigorously test them and the system 
                             to ensure the update met the customer's expectations and did not impact other parts of the system.</p>
 
@@ -1228,7 +1252,7 @@
                             It also was responsible for determining the kill solution for a given threat, and coordinating the engagement of the VLS, CIWS, and ACS to achieve that kill solution. 
                             One of the primary challenges was managing the coordinated response the various weapon systems to a given threat or series of threats, as the system had a complex interlocking of dependencies between the various weapons.
                             </p>
-                            <p>In this role I implemented and tested hundreds of requirements changes, spent over 1000 hours in the AEGIS test facility running stress and endurance tests, and deployed on two Sejong the Great-class destroyers in South Korea. </p>
+                            <p>In this role I implemented and tested hundreds of requirements changes, spent over 1000 hours in the AEGIS test facility running stress and endurance tests, and deployed on two <a href="https://en.wikipedia.org/wiki/Sejong_the_Great-class_destroyer">Sejong the Great-class destroyers</a> in South Korea. </p>
                         </div>
                     </div>
                 </div>
@@ -1242,8 +1266,11 @@
     
     <footer>
         <div class="footer-content">
-            <div class="footer-left">
-                <div class="footer-site-name">thaddeusjones.com</div>
+            <div class="footer-row">
+                <div class="footer-site-name"><a href="/">thaddeusjones.com</a></div>
+                <div class="footer-description">A repository of my work, personal projects, and thoughts.</div>
+            </div>
+            <div class="footer-row">
                 <div class="footer-social">
                     <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank" aria-label="LinkedIn">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1251,9 +1278,6 @@
                         </svg>
                     </a>
                 </div>
-            </div>
-            <div class="footer-right">
-                <div class="footer-description">A repository of my work, personal projects, and thoughts.</div>
                 <div class="footer-copyright">© 2025.</div>
             </div>
         </div>

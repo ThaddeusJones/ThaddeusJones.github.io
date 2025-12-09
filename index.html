@@ -12,11 +12,15 @@
             box-sizing: border-box;
         }
         
+        html {
+            scrollbar-gutter: stable;
+        }
+        
         :root {
             --bg-color: #ffffff;
             --text-color: #1a1a1a;
             --text-muted: #4a4a4a;
-            --link-color: #1a1a1a;
+            --link-color: #2563eb;
             --nav-hover-opacity: 0.6;
         }
         
@@ -24,7 +28,7 @@
             --bg-color: #1a1a1a;
             --text-color: #ffffff;
             --text-muted: #888;
-            --link-color: #ffffff;
+            --link-color: #60a5fa;
             --nav-hover-opacity: 0.7;
         }
         
@@ -32,7 +36,7 @@
             --bg-color: #000000;
             --text-color: #ffffff;
             --text-muted: #aaaaaa;
-            --link-color: #ffffff;
+            --link-color: #60a5fa;
             --nav-hover-opacity: 0.7;
         }
         
@@ -248,7 +252,7 @@
             background-color: transparent;
             color: var(--text-muted);
             margin-top: 80px;
-            padding: 60px 0 0;
+            padding: 60px 0 40px;
             position: relative;
             z-index: 1;
         }
@@ -257,32 +261,47 @@
             max-width: 680px;
             margin: 0 auto;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 40px;
+            flex-direction: column;
+            gap: 8px;
         }
         
-        .footer-left {
+        .footer-row {
             display: flex;
-            flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 40px;
         }
         
         .footer-site-name {
             font-size: 18px;
             font-weight: 500;
             color: var(--text-color);
+            line-height: 1;
+        }
+        
+        .footer-site-name a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        
+        .footer-site-name a:hover {
+            opacity: var(--nav-hover-opacity);
         }
         
         .footer-social {
             display: flex;
             gap: 16px;
+            align-items: center;
         }
         
         .footer-social a {
             color: var(--text-muted);
             text-decoration: none;
             transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .footer-social a:hover {
@@ -293,23 +312,20 @@
             width: 20px;
             height: 20px;
             fill: currentColor;
-        }
-        
-        .footer-right {
-            text-align: right;
-            max-width: 400px;
+            display: block;
         }
         
         .footer-description {
             font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 12px;
+            line-height: 1;
             color: var(--text-muted);
+            text-align: right;
         }
         
         .footer-copyright {
             font-size: 14px;
             color: var(--text-muted);
+            line-height: 1;
         }
         
         .footer-copyright a {
@@ -322,11 +338,13 @@
         }
         
         @media (max-width: 768px) {
-            .footer-content {
+            .footer-row {
                 flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
             }
             
-            .footer-right {
+            .footer-description {
                 text-align: left;
             }
         }
@@ -385,8 +403,11 @@
     
     <footer>
         <div class="footer-content">
-            <div class="footer-left">
-                <div class="footer-site-name">thaddeusjones.com</div>
+            <div class="footer-row">
+                <div class="footer-site-name"><a href="/">thaddeusjones.com</a></div>
+                <div class="footer-description">A repository of my work, personal projects, and thoughts.</div>
+            </div>
+            <div class="footer-row">
                 <div class="footer-social">
                     <a href="https://www.linkedin.com/in/thaddeus-jones/" target="_blank" aria-label="LinkedIn">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -394,9 +415,6 @@
                         </svg>
                     </a>
                 </div>
-            </div>
-            <div class="footer-right">
-                <div class="footer-description">A repository of my work, personal projects, and thoughts.</div>
                 <div class="footer-copyright">© 2025.</div>
             </div>
         </div>
