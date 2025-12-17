@@ -1,4 +1,7 @@
+- The Isaacman manifesto
+- How do you design a space mission
 - The tools I use
+- AI data centers in space
 - AI in spacecraft design
 - Saturn radiation? 
 - Is heritage holding us back
