@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<title>satblocks · sbd editor</title>
+<style>
+:root{
+  --paper:#F4F6F1; --ink:#21272C; --boxline:#2C343B; --grid:#DFE3DA;
+  --panel:#14191D; --panel2:#1D242A; --ptext:#C8D1CA; --pdim:#79847D; --pline:#2C353C;
+  --accent:#E2A23B; --pw:#BE3A1D; --dt:#1D6CA8;
+  --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Consolas,monospace;
+  --cond:"Archivo Narrow","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{display:flex;font-family:var(--cond);background:var(--panel);color:var(--ptext);overflow:hidden}
+#side,#rside{width:296px;min-width:296px;height:100vh;overflow-y:auto;background:var(--panel);
+  border-right:1px solid #000;padding:14px 16px 28px;font-family:var(--mono)}
+#rside{width:232px;min-width:232px;border-right:none;border-left:1px solid #000}
+#rside .sec:first-child{margin-top:0;border-top:none;padding-top:4px}
+#side h1{font-family:var(--cond);font-size:15px;letter-spacing:.22em;color:#EDF1EA;font-weight:700;
+  text-transform:uppercase;line-height:1.35;border-bottom:2px solid var(--accent);padding-bottom:9px}
+#side h1 small{display:block;font-size:9.5px;letter-spacing:.3em;color:var(--pdim);font-weight:400;margin-top:3px}
+.sec{margin-top:16px;border-top:1px solid var(--pline);padding-top:10px}
+.sec>label{display:block;font-size:9px;letter-spacing:.25em;color:var(--pdim);text-transform:uppercase;margin-bottom:7px}
+textarea{width:100%;height:128px;background:#0D1114;border:1px solid var(--pline);color:var(--ptext);
+  font-family:var(--mono);font-size:10px;line-height:1.5;padding:7px;resize:vertical;border-radius:2px}
+textarea:focus{outline:1px solid var(--accent)}
+button{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;background:var(--panel2);
+  color:var(--ptext);border:1px solid #39434B;border-bottom-width:2px;border-radius:3px;
+  padding:6px 9px;cursor:pointer;text-transform:uppercase}
+button:hover:not(:disabled){border-color:var(--accent);color:#fff}
+button:active:not(:disabled){transform:translateY(1px);border-bottom-width:1px}
+button:disabled{opacity:.32;cursor:default}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button.primary{background:var(--accent);color:#14191D;border-color:#B57F27;font-weight:700}
+.row{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}
+.row button{flex:1}
+.seg{display:flex;border:1px solid #39434B;border-radius:3px;overflow:hidden}
+.seg button{flex:1;border:none;border-radius:0;border-bottom:2px solid transparent;padding:7px 4px}
+.seg button.on-power{background:var(--pw);color:#fff;font-weight:700}
+.seg button.on-data{background:var(--dt);color:#fff;font-weight:700}
+.legend{font-size:10px;line-height:2.1;color:var(--pdim)}
+.legend svg{vertical-align:middle;margin-right:7px}
+#status{margin-top:8px;border:1px dashed #39434B;border-radius:3px;background:#0D1114;
+  padding:8px;font-size:10px;line-height:1.55;color:#9FB0A5;min-height:46px;white-space:pre-wrap}
+#saveNote{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--pdim);margin-top:14px}
+#saveNote.ok{color:#6FA985}
+#saveNote.err{color:#C96A55}
+.hint{font-size:9.5px;line-height:1.65;color:var(--pdim);margin-top:8px}
+.hint b{color:var(--ptext);font-weight:400}
+kbd{border:1px solid #39434B;border-radius:2px;padding:0 3px;font-size:9px}
+#wrap{flex:1;height:100vh;overflow:auto;background:#0B0E11;padding:22px}
+#svg{display:block;background:var(--paper);box-shadow:0 0 0 1px #000,0 14px 50px rgba(0,0,0,.65);user-select:none;touch-action:none}
+#svg text{user-select:none;pointer-events:none}
+.lhit{fill:none;stroke:rgba(0,0,0,0);stroke-width:13;pointer-events:stroke;cursor:pointer}
+.lp{fill:none;stroke:var(--pw);stroke-width:2.4;pointer-events:none}
+.ld{fill:none;stroke:var(--dt);stroke-width:2.4;pointer-events:none}
+.lsel{fill:none;stroke:var(--accent);stroke-width:8;opacity:.4;pointer-events:none;stroke-linecap:round}
+.comp{cursor:crosshair}
+select{font-family:var(--mono);font-size:10.5px;background:var(--panel2);color:var(--ptext);
+  border:1px solid #39434B;border-radius:3px;padding:6px;width:100%}
+select:focus{outline:1px solid var(--accent)}
+select:disabled{opacity:.32;cursor:default}
+.pal{display:flex;gap:2px;padding:5px 6px;align-items:center}
+.pal span{width:13px;height:13px;border:1px solid rgba(0,0,0,.45);border-radius:1px}
+.pal.on{border-color:var(--accent);color:#fff}
+#copy{position:fixed;right:12px;bottom:10px;font-family:var(--mono);font-size:8.5px;
+  color:var(--pdim);pointer-events:none;z-index:1}
+#copy a{pointer-events:auto;color:inherit;text-decoration:none}
+#copy a:hover{color:var(--ptext);text-decoration:underline}
+@media (max-width:980px){body{flex-direction:column;overflow:auto}
+  #side,#rside{width:100%;min-width:0;height:auto;border-right:none;border-left:none;border-bottom:1px solid #000}
+  #rside{order:3;border-bottom:none;border-top:1px solid #000}
+  #wrap{height:auto;min-height:70vh;order:2}}
+@media (prefers-reduced-motion:no-preference){button{transition:border-color .12s,color .12s}}
+</style>
+</head>
+<body>
+<aside id="side">
+  <h1>🟨satblocks<small>System Block Diagram Editor</small></h1>
+
+  <div class="sec">
+    <label>Component manifest</label>
+    <textarea id="manifest" spellcheck="false"></textarea>
+    <div class="row">
+      <button id="btnApply" class="primary">Apply manifest</button>
+      <button id="btnFile" title="Load a .txt manifest">Load file</button>
+      <input type="file" id="fileInput" accept=".txt,text/plain" style="display:none">
+    </div>
+  </div>
+
+  <div class="sec">
+    <label>New Line Connector Type</label>
+    <div class="seg" style="margin-bottom:7px">
+      <button id="ifSimple">Simple</button>
+      <button id="ifDetail">Detailed</button>
+    </div>
+    <div class="seg" id="kindSeg">
+      <button id="kindPower">Power</button>
+      <button id="kindData">Data</button>
+    </div>
+    <select id="kindSel" style="display:none">
+      <optgroup label="POWER">
+        <option value="power:120V">120V</option>
+		<option value="power:70V">70V</option>
+		<option value="power:66V">66V</option>
+        <option value="power:50V">50V</option>
+        <option value="power:28V">28V</option>
+        <option value="power:12V">12V</option>
+        <option value="power:5V">5V</option>
+		<option value="power:3.3V">3.3V</option>
+      </optgroup>
+      <optgroup label="DATA">
+        <option value="data:Ethernet">Ethernet</option>
+        <option value="data:SpaceWire">SpaceWire</option>
+        <option value="data:CAN">CAN</option>
+		<option value="data:RS-232">RS-232</option>
+        <option value="data:RS-422">RS-422</option>
+        <option value="data:RS-485">RS-485</option>
+		<option value="data:I2C">I2C</option>
+		<option value="data:SPI">SPI</option>
+		<option value="data:GPIO">GPIO</option>
+        <option value="data:Coax">Coax</option>
+        <option value="data:1553">MIL-STD-1553</option>
+		<option value="data:ADC/DAC">ADC/DAC</option>
+      </optgroup>
+      <optgroup label="OTHER">
+        <option value="prop">Propellant</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <div class="sec">
+    <label>Sheet</label>
+    <div class="row">
+      <button id="btnArrange" class="primary">Autoroute</button>
+      <button id="btnClear">Clear lines</button>
+    </div>
+    <div class="row">
+      <button id="zoomOut">&minus;</button>
+      <button id="zoomFit">Fit</button>
+      <button id="zoomIn">+</button>
+    </div>
+    <div class="row">
+      <button id="btnSvg">Export SVG</button>
+      <button id="btnPng">Export PNG</button>
+    </div>
+    <div class="row">
+      <button id="btnSaveJson" title="Download the diagram as a .json file">Save .json</button>
+      <button id="btnLoadJson" title="Restore a diagram from a .json file">Load .json</button>
+      <input type="file" id="jsonInput" accept=".json,application/json" style="display:none">
+    </div>
+  </div>
+
+  <div class="sec">
+    <label>How to use</label>
+    <div class="hint">
+      <b>Manifest:</b> Edit and apply the manifest to add or remove components. Indicate multiple units of a component with <b>xN</b>. Use <b>Load file</b> to load a manifest from a .txt file.<br>
+      <b>Draw:</b> drag between boxes. Press or release near an <b>edge</b> to pin that face (the edge highlights); press the <b>middle</b> to let the router pick the best face (the box outlines).<br>
+      <b>Select:</b> click a line or box. <kbd>Shift</kbd>-click adds. <kbd>Del</kbd> removes lines, <kbd>Esc</kbd> clears.<br>
+      <b>Merge:</b> select 2+ lines of one type to share a bus trunk. <b>Unmerge</b> separates selected merged connectors.<br>
+      <b>Display:</b> select a component with &times;N to switch single / stacked / multiple.<br>
+      <b>Autoroute:</b> after drafting connectors, use autoroute to automatically <b>reroute</b> all connections for legibility.<br>
+      <b>Heritage:</b> select a component, then choose a heritage level from the dropdown on the right.<br>
+      <b>Saving:</b> the sheet autosaves in this browser; use <b>Save / Load .json</b> to work on multiple projects, or move a project between machines.
+    </div>
+  </div>
+
+  <div id="saveNote"></div>
+  <div id="status">Ready.</div>
+</aside>
+
+<main id="wrap"><svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg></main>
+
+<aside id="rside">
+  <div class="sec">
+    <label>Selected lines</label>
+    <div class="row">
+      <button id="btnDelete">Delete</button>
+      <button id="btnMerge">Merge</button>
+      <button id="btnUnmerge">Unmerge</button>
+    </div>
+  </div>
+
+  <div class="sec">
+    <label>Selected component display</label>
+    <div class="row">
+      <button id="modeSingle">Single</button>
+      <button id="modeStacked">Stacked</button>
+      <button id="modeMultiple">Multiple</button>
+    </div>
+    <div class="row">
+      <button id="btnSwap" title="Swap the positions of two selected components in the same subsystem">Swap positions</button>
+    </div>
+    <label style="margin-top:10px">Heritage</label>
+    <select id="herSel" disabled>
+      <option value="">None</option>
+      <option value="F">(F) Flight heritage</option>
+      <option value="m">(m) Minor modification</option>
+      <option value="M">(M) Major modification</option>
+      <option value="N">(N) New / no heritage</option>
+      <option value="C">(C) Customer furnished</option>
+    </select>
+  </div>
+
+  <div class="sec">
+    <label>Heritage palette</label>
+    <div class="row" id="palRow"></div>
+    <div class="legend" id="herLegend" style="margin-top:6px"></div>
+  </div>
+</aside>
+
+<footer id="copy">&copy; 2026 <a href="https://thaddeusjones.com" target="_blank" rel="noopener noreferrer">thaddeus jones</a></footer>
+
+<script>
+/* ================= constants ================= */
+const SUBS=["C&DH","GN&C","EPS","Comms","Struc. & Mech.","Thermal","Propulsion","Instrument"];
+const G=8, HALO=8;
+const COMP_W=128, COMP_H=44, CGX=36, CGY=32, SUB_PAD=24, TITLE_H=26;
+const GUTTER=76, MARGIN=56, ST=7;
+const BEND=24, CROSS=14, LANE=110, INSUB=0.7;
+const FAMCOLOR={power:'#BE3A1D',data:'#1D6CA8',prop:'#1F7A4D'};
+const KIND_INFO={
+  'power':         {fam:'power',label:'Power',col:'#BE3A1D'},
+  'power:120V':    {fam:'power',label:'120V',col:'#5C0A0A'},
+  'power:70V':     {fam:'power',label:'70V',col:'#7F1212'},
+  'power:66V':     {fam:'power',label:'66V',col:'#A31818'},
+  'power:50V':     {fam:'power',label:'50V',col:'#C4451A'},
+  'power:28V':     {fam:'power',label:'28V',col:'#E2711D'},
+  'power:12V':     {fam:'power',label:'12V',col:'#D4145A'},
+  'power:5V':      {fam:'power',label:'5V',col:'#B8860B'},
+  'power:3.3V':    {fam:'power',label:'3.3V',col:'#6B8E23'},
+  'data':          {fam:'data',label:'Data',col:'#1D6CA8'},
+  'data:Ethernet': {fam:'data',label:'Ethernet',col:'#1B5E9E'},
+  'data:SpaceWire':{fam:'data',label:'SpaceWire',col:'#29A8DF'},
+  'data:CAN':      {fam:'data',label:'CAN',col:'#0D7377'},
+  'data:RS-232':   {fam:'data',label:'RS-232',col:'#4B3F9F'},
+  'data:RS-422':   {fam:'data',label:'RS-422',col:'#6B4FA0'},
+  'data:RS-485':   {fam:'data',label:'RS-485',col:'#9437A0'},
+  'data:I2C':      {fam:'data',label:'I2C',col:'#2E7D6E'},
+  'data:SPI':      {fam:'data',label:'SPI',col:'#6A994E'},
+  'data:GPIO':     {fam:'data',label:'GPIO',col:'#7B68EE'},
+  'data:Coax':     {fam:'data',label:'Coax',col:'#5C7185'},
+  'data:1553':     {fam:'data',label:'MIL-STD-1553',col:'#1F7A4D'},
+  'data:ADC/DAC':  {fam:'data',label:'ADC/DAC',col:'#B5651D'},
+  'prop':          {fam:'prop',label:'Propellant',col:'#1F2F5C'}
+};
+const KIND_ORDER=Object.keys(KIND_INFO);
+const kindInfo=k=>KIND_INFO[k]||{fam:'data',label:k,col:'#1D6CA8'};
+/* simple mode renders every line in its generic family color */
+const lineColor=k=>state.detail?kindInfo(k).col:FAMCOLOR[kindInfo(k).fam];
+const HERS=[['F','Flight heritage','Flight'],['m','Minor modification','Minor mod'],['M','Major modification','Major mod'],['N','New / no heritage','New'],['C','Customer furnished','Customer Furnished']];
+const PALS=[
+  {name:'Drafting',F:'#D8EAD2',m:'#FBF0C4',M:'#F8DCC0',N:'#F3C6C2',C:'#D9D2E9'},
+  {name:'Field',   F:'#B7DFAE',m:'#F2E08A',M:'#F2BA80',N:'#EC9D98',C:'#A4C8E8'},
+  {name:'Cool',    F:'#CFEFE2',m:'#D4E8F6',M:'#B9CDEE',N:'#E3C8EF',C:'#CBD5DC'},
+  {name:'Earth',   F:'#DCE7C4',m:'#F1E1B5',M:'#E7C8A4',N:'#DFAEA0',C:'#C8CDB6'},
+  {name:'Mono',    F:'#FFFFFF',m:'#E9EBE7',M:'#D3D7D1',N:'#BCC2BC',C:'#A2AAA2'}
+];
+const DIRS=[[1,0],[-1,0],[0,1],[0,-1]];           // 0:+x 1:-x 2:+y 3:-y
+const FACEOUT={E:0,W:1,S:2,N:3};
+
+/* ================= state ================= */
+const state={
+  comps:[], lines:[], order:[0,1,2,3,4,5,6,7],
+  kind:'power', detail:false, palette:0, selLines:new Set(), selComps:new Set(),
+  zoom:1, nextLine:1, nextComp:1, nextGroup:1
+};
+/* derived */
+let instances=[], instByKey={}, subsData=[], W=1200, H=800;
+let nx=0, ny=0, instOf=null, labelBlock=null, bandH=null, bandV=null, subOf=null, occH=null, occV=null;
+let drawItems=[], warnings=0;
+
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fx=p=>Math.min(nx-1,Math.max(0,Math.floor(p/G)));
+const fy=p=>Math.min(ny-1,Math.max(0,Math.floor(p/G)));
+const snapG=v=>Math.round(v/G)*G;
+const cc=i=>i*G+G/2;
+
+/* ================= manifest parsing ================= */
+const SUBALIAS={cdh:0,candh:0,cdhs:0,commandanddatahandling:0,
+  gnc:1,gandc:1,gnandc:1,adcs:1,guidance:1,guidancenavigationandcontrol:1,
+  eps:2,power:2,electricalpowersystem:2,
+  comms:3,comm:3,communications:3,rf:3,telecom:3,
+  structuresandmechanisms:4,structures:4,structuresmechanisms:4,sm:4,sandm:4,mech:4,mechanisms:4,
+  thermal:5,tcs:5,
+  propulsion:6,prop:6,
+  instrument:7,pl:7,instruments:7,payload:7};
+function resolveSub(name){
+  const n=name.toLowerCase().replace(/[^a-z]/g,'');
+  return (n in SUBALIAS)? SUBALIAS[n] : -1;
+}
+function parseManifest(text){
+  const comps=[], errors=[];
+  text.split('\n').forEach((raw,i)=>{
+    const line=raw.trim();
+    if(!line||line.startsWith('#'))return;
+    const m=line.match(/^([^:]+):(.*)$/);
+    if(!m){errors.push(`Line ${i+1}: expected "Subsystem: comp, comp x2, ..."`);return;}
+    const sub=resolveSub(m[1]);
+    if(sub<0){errors.push(`Line ${i+1}: unknown subsystem "${m[1].trim()}"`);return;}
+    m[2].split(',').map(t=>t.trim()).filter(Boolean).forEach(tok=>{
+      let name=tok,count=1;
+      for(;;){
+        const mm=name.match(/^(.*?)\s*[x\u00d7](\d+)$/i);
+        if(mm){name=mm[1].trim();count=Math.max(1,Math.min(99,+mm[2]));continue;}
+        const hm=name.match(/^(.*?)\s*\(([FfmMNnCc])\)\s*$/);
+        if(hm){name=hm[1].trim();continue;}
+        break;
+      }
+      if(name) comps.push({id:'c'+(state.nextComp++), name, sub, count, mode:'single', her:null});
+    });
+  });
+  return {comps,errors};
+}
+
+/* ================= layout ================= */
+function buildMeta(){
+  const perSub=SUBS.map(()=>[]);
+  state.comps.forEach(c=>perSub[c.sub].push(c));
+  const vis=state.order.filter(si=>perSub[si].length>0);   // empty subsystems are hidden
+  const meta={};
+  vis.forEach(si=>{
+    const list=perSub[si],items=[];
+    list.forEach(c=>{
+      const n=c.mode==='multiple'?c.count:1;
+      for(let i=0;i<n;i++)items.push({comp:c,idx:i});
+    });
+    const n=items.length;
+    const stacked=list.some(c=>c.mode==='stacked'&&c.count>1);
+    const ex=stacked?Math.min(3,Math.max(...list.map(c=>c.mode==='stacked'?c.count-1:0),0))*ST:0;
+    meta[si]={items,n,ex};
+  });
+  return {vis,meta};
+}
+const shapeH=(m,k)=>TITLE_H+SUB_PAD*2+k*(COMP_H+m.ex)+(k-1)*CGY;
+const shapeW=(m,k)=>{
+  const cols=Math.ceil(m.n/k);
+  return Math.max(SUB_PAD*2+cols*(COMP_W+m.ex)+(cols-1)*CGX,196);
+};
+const prefK=m=>Math.ceil(m.n/Math.min(Math.ceil(Math.sqrt(m.n)),4));
+/* greedy column packing: subsystems stack vertically into columns of one
+   shared sheet height; each picks its tallest grid shape that fits the
+   remaining space, then everything stretches so all edges are justified */
+function pack(vis,meta,Ht){
+  if(!vis.length)return {cols:[],Ht:160,totalW:400};
+  const kFit=(m,a)=>Math.min(m.n,Math.floor((a-TITLE_H-SUB_PAD*2+CGY)/(COMP_H+m.ex+CGY)));
+  const cols=[];let cur=null;
+  vis.forEach(si=>{
+    const m=meta[si];
+    let k;
+    if(cur){
+      k=kFit(m,Ht-cur.used-GUTTER);          // follower: reshape tall to fill the gap
+      if(k<1){cols.push(cur);cur=null;}
+    }
+    if(!cur)k=Math.min(prefK(m),Math.max(1,kFit(m,Ht)));  // fresh column: preferred shape
+    if(!cur)cur={subs:[],used:0,w:0};
+    if(cur.subs.length)cur.used+=GUTTER;
+    const ent={si,k,w:shapeW(m,k),h:shapeH(m,k)};
+    cur.subs.push(ent);cur.used+=ent.h;cur.w=Math.max(cur.w,ent.w);
+  });
+  if(cur)cols.push(cur);
+  cols.forEach(col=>{
+    const per=(Ht-col.used)/col.subs.length;   // justify: share the leftover
+    let y=0;
+    col.subs.forEach(s=>{s.y=y;s.h+=per;s.w=col.w;y+=s.h+GUTTER;});
+  });
+  const totalW=cols.reduce((a,c)=>a+c.w,0)+Math.max(0,cols.length-1)*GUTTER;
+  return {cols,Ht,totalW};
+}
+/* try a few sheet heights and keep the most compact, well-proportioned one */
+function packBest(vis,meta){
+  if(!vis.length)return pack(vis,meta,160);
+  const prefs=vis.map(si=>shapeH(meta[si],prefK(meta[si])));
+  const maxP=Math.max(...prefs);
+  const sorted=prefs.slice().sort((a,b)=>a-b);
+  const total=prefs.reduce((a,h)=>a+h+GUTTER,0);
+  const cands=new Set();
+  for(let k=0;k<=12;k++){
+    const Ht=maxP+k*(COMP_H+CGY);
+    if(Ht>total)break;
+    cands.add(Ht);
+  }
+  cands.add(maxP);
+  const ASPECT=16/9;   // aim for slide-like proportions
+  let best=null,bestS=Infinity;
+  cands.forEach(Ht=>{
+    const P=pack(vis,meta,Ht);
+    const asp=(P.totalW+2*MARGIN)/(P.Ht+2*MARGIN+96);
+    const s=P.totalW*P.Ht*(1+1.1*Math.abs(Math.log2(asp/ASPECT)));
+    if(s<bestS){bestS=s;best=P;}
+  });
+  return best;
+}
+function packCenters(vis,meta,Ht){
+  const P=Ht?pack(vis,meta,Ht):packBest(vis,meta),pos={};
+  let x=0;
+  P.cols.forEach(col=>{
+    col.subs.forEach(s=>{pos[s.si]={x:x+col.w/2,y:s.y+s.h/2};});
+    x+=col.w+GUTTER;
+  });
+  return pos;
+}
+function relayout(){
+  const {vis,meta}=buildMeta();
+  const P=packBest(vis,meta);
+  W=snapG(P.totalW+2*MARGIN);
+  H=snapG(P.Ht+2*MARGIN+titleBlockDims().h+40);
+  instances=[];instByKey={};subsData=[];
+  let x=MARGIN;
+  P.cols.forEach(col=>{
+    col.subs.forEach(s=>{
+      const m=meta[s.si];
+      const sx=snapG(x),sy=snapG(MARGIN+s.y);
+      const w=snapG(col.w),h=snapG(MARGIN+s.y+s.h)-sy;
+      subsData[s.si]={rect:{x:sx,y:sy,w,h}};
+      const colsN=Math.ceil(m.n/s.k);
+      m.items.forEach((it,i)=>{
+        const gc=i%colsN,gr=Math.floor(i/colsN);
+        const rx=sx+SUB_PAD+gc*(COMP_W+m.ex+CGX);
+        const ry=sy+TITLE_H+SUB_PAD+gr*(COMP_H+m.ex+CGY);
+        const key=it.comp.id+':'+it.idx;
+        const inst={key,comp:it.comp,idx:it.idx,sub:s.si,gr,gc,
+          rect:{x:snapG(rx),y:snapG(ry),w:COMP_W,h:COMP_H},
+          stackN:(it.comp.mode==='stacked')?it.comp.count:1};
+        inst._i=instances.length;
+        instances.push(inst);instByKey[key]=inst;
+      });
+    });
+    x+=col.w+GUTTER;
+  });
+}
+function sanitizeLines(){
+  state.lines=state.lines.filter(L=>['a','b'].every(e=>{
+    if(instByKey[L[e].inst])return true;
+    const cid=L[e].inst.split(':')[0];
+    if(instByKey[cid+':0']){L[e].inst=cid+':0';return true;}
+    return false;
+  }));
+  // at most one connector of each type between the same two components
+  const seenPair=new Set();
+  state.lines=state.lines.filter(L=>{
+    const k=L.kind+'|'+[L.a.inst,L.b.inst].sort().join('|');
+    if(seenPair.has(k))return false;
+    seenPair.add(k);
+    return true;
+  });
+  const live=new Set(state.lines.map(l=>l.id));
+  state.selLines=new Set([...state.selLines].filter(id=>live.has(id)));
+  const counts={};
+  state.lines.forEach(l=>{if(l.group)counts[l.group]=(counts[l.group]||0)+1;});
+  state.lines.forEach(l=>{if(l.group&&counts[l.group]<2)l.group=null;});
+}
+
+/* ================= routing grid ================= */
+function fillCells(arr,x0,y0,x1,y1,val){
+  const cx0=Math.max(0,Math.floor(x0/G)),cx1=Math.min(nx-1,Math.floor((x1-0.01)/G));
+  const cy0=Math.max(0,Math.floor(y0/G)),cy1=Math.min(ny-1,Math.floor((y1-0.01)/G));
+  for(let iy=cy0;iy<=cy1;iy++)for(let ix=cx0;ix<=cx1;ix++)arr[iy*nx+ix]=val;
+}
+function footprint(inst){
+  const s=Math.min(inst.stackN-1,3)*ST,r=inst.rect;
+  return {x:r.x,y:r.y,w:r.w+s,h:r.h+s};
+}
+function buildGrid(){
+  nx=Math.ceil(W/G);ny=Math.ceil(H/G);
+  const N=nx*ny;
+  instOf=new Int16Array(N).fill(-1);
+  labelBlock=new Uint8Array(N);
+  bandH=new Uint8Array(N);bandV=new Uint8Array(N);
+  subOf=new Int16Array(N).fill(-1);
+  occH=new Int16Array(N);occV=new Int16Array(N);
+  gArr=new Float64Array(N*4);cameArr=new Int32Array(N*4);
+  subsData.forEach((sd,s)=>{
+    const r=sd.rect;
+    fillCells(subOf,r.x-HALO,r.y-HALO,r.x+r.w+HALO,r.y+r.h+HALO,s);
+    // borders: running along is forbidden, crossing is fine
+    fillCells(bandH,r.x-HALO,r.y-HALO,r.x+r.w+HALO,r.y+HALO,1);
+    fillCells(bandH,r.x-HALO,r.y+r.h-HALO,r.x+r.w+HALO,r.y+r.h+HALO,1);
+    fillCells(bandV,r.x-HALO,r.y-HALO,r.x+HALO,r.y+r.h+HALO,1);
+    fillCells(bandV,r.x+r.w-HALO,r.y-HALO,r.x+r.w+HALO,r.y+r.h+HALO,1);
+    // title text is opaque to routing
+    fillCells(labelBlock,r.x+2,r.y+1,r.x+150,r.y+TITLE_H,1);
+  });
+  instances.forEach((inst,i)=>{
+    const f=footprint(inst);
+    fillCells(instOf,f.x-HALO,f.y-HALO,f.x+f.w+HALO,f.y+f.h+HALO,i);
+  });
+  const tb=titleBlockRect();
+  fillCells(labelBlock,tb.x-HALO,tb.y-HALO,tb.x+tb.w+HALO,tb.y+tb.h+HALO,1);
+}
+function legendEntries(includeCurrent){
+  const used=new Set(state.lines.map(l=>l.kind));
+  if(includeCurrent)used.add(state.kind);
+  const ks=KIND_ORDER.filter(k=>used.has(k));
+  if(state.detail)return ks.map(k=>({label:kindInfo(k).label,color:kindInfo(k).col}));
+  const fams=[...new Set(ks.map(k=>kindInfo(k).fam))];
+  const names={power:'Power',data:'Data',prop:'Propellant'};
+  return ['power','data','prop'].filter(f=>fams.includes(f)).map(f=>({label:names[f],color:FAMCOLOR[f]}));
+}
+function usedHeritages(){return HERS.filter(h=>state.comps.some(c=>c.her===h[0]));}
+function titleBlockDims(){
+  const L=legendEntries(false),Hh=usedHeritages();
+  const twoCol=L.length>6;
+  const rowsL=twoCol?Math.ceil(L.length/2):L.length;
+  const rows=Math.max(1,rowsL,Hh.length);
+  const legendW=L.length?(twoCol?218:112):0;
+  const herW=Hh.length?126:0;
+  const w=Math.max(140,legendW+herW+18);
+  return {w,h:24+rows*13+10};
+}
+function titleBlockRect(){
+  const d=titleBlockDims();
+  return {x:Math.max(24,W-d.w-22),y:H-d.h-22,w:d.w,h:d.h};
+}
+
+function passable(ix,iy,d2,route){
+  if(ix<3||iy<3||ix>nx-4||iy>ny-4)return false;
+  const ci=iy*nx+ix;
+  if(route.allow.has(ci))return true;
+  if(instOf[ci]>=0||labelBlock[ci])return false;
+  if(d2<2&&bandH[ci])return false;
+  if(d2>=2&&bandV[ci])return false;
+  const s=subOf[ci];
+  if(route.onlySub!=null)return s===route.onlySub;
+  if(s>=0&&!route.relax){
+    if(route.interiorForbid===s)return false;
+    if(!route.subsOK.has(s))return false;
+  }
+  return true;
+}
+
+/* ================= A* ================= */
+class Heap{
+  constructor(){this.a=[];}
+  get size(){return this.a.length;}
+  push(n){const a=this.a;a.push(n);let i=a.length-1;
+    while(i>0){const p=(i-1)>>1;if(a[p].f<=a[i].f)break;[a[p],a[i]]=[a[i],a[p]];i=p;}}
+  pop(){const a=this.a,t=a[0],l=a.pop();
+    if(a.length){a[0]=l;let i=0;
+      for(;;){let c=2*i+1;if(c>=a.length)break;
+        if(c+1<a.length&&a[c+1].f<a[c].f)c++;
+        if(a[i].f<=a[c].f)break;[a[i],a[c]]=[a[c],a[i]];i=c;}}
+    return t;}
+}
+let gArr=null,cameArr=null;
+function astar(route){
+  gArr.fill(Infinity);cameArr.fill(-1);
+  const open=new Heap();
+  const bb=route.gbb;
+  const h=(route.goalSet||!bb)?()=>0:
+    (ix,iy)=>Math.max(0,bb.x0-ix)+Math.max(0,ix-bb.x1)+Math.max(0,bb.y0-iy)+Math.max(0,iy-bb.y1);
+  route.starts.forEach(s=>{
+    const k=(s.iy*nx+s.ix)*4+s.d;
+    if(s.g<gArr[k]){
+      gArr[k]=s.g;
+      open.push({ix:s.ix,iy:s.iy,d:s.d,g:s.g,f:s.g+h(s.ix,s.iy),k});
+    }
+  });
+  let guard=0;
+  while(open.size&&guard++<400000){
+    const cur=open.pop();
+    if(cur.g>gArr[cur.k])continue;
+    const ci=cur.iy*nx+cur.ix;
+    const done=route.goalSet?route.goalSet.has(ci):route.goalStates.has(cur.k);
+    if(done){
+      const pts=[];let k=cur.k,root=cur.k;
+      while(k!==-1){root=k;const cell=k>>2;pts.push({ix:cell%nx,iy:Math.floor(cell/nx)});k=cameArr[k];}
+      return {cells:pts.reverse(),startK:root,goalK:cur.k};
+    }
+    for(let d2=0;d2<4;d2++){
+      if(d2===(cur.d^1))continue;
+      const nix=cur.ix+DIRS[d2][0],niy=cur.iy+DIRS[d2][1];
+      if(!passable(nix,niy,d2,route))continue;
+      const nci=niy*nx+nix;
+      let c=1+(d2!==cur.d?BEND:0);
+      if(!route.allow.has(nci)){
+        if(d2<2){if(occV[nci])c+=CROSS;if(occH[nci])c+=LANE;}
+        else{if(occH[nci])c+=CROSS;if(occV[nci])c+=LANE;}
+        if(subOf[nci]>=0)c+=INSUB;   // prefer routing around subsystem boxes
+      }
+      const nk=nci*4+d2;
+      if(route.goalBias&&route.goalBias.has(nk))c+=route.goalBias.get(nk);
+      const ng=cur.g+c;
+      if(ng<gArr[nk]){
+        gArr[nk]=ng;cameArr[nk]=cur.k;
+        open.push({ix:nix,iy:niy,d:d2,g:ng,f:ng+h(nix,niy),k:nk});
+      }
+    }
+  }
+  return null;
+}
+
+/* ================= corridors & route assembly ================= */
+function corridor(pt,end,route,ray){
+  let ix=fx(pt.x),iy=fy(pt.y);
+  const dxy=DIRS[end.out],sr=ray?subsData[end.sub].rect:null;
+  for(let k=0;k<400;k++){
+    if(ix<3||iy<3||ix>nx-4||iy>ny-4)return null;
+    const ci=iy*nx+ix;
+    if(instOf[ci]>=0&&instOf[ci]!==end.instIdx)return null;
+    if(labelBlock[ci])return null;
+    route.allow.add(ci);
+    if(ray){
+      const px=cc(ix),py=cc(iy);
+      if(px<sr.x-HALO-G||px>sr.x+sr.w+HALO+G||py<sr.y-HALO-G||py>sr.y+sr.h+HALO+G)return {ix,iy};
+    }else if(k>0&&instOf[ci]<0&&!bandH[ci]&&!bandV[ci])return {ix,iy};
+    ix+=dxy[0];iy+=dxy[1];
+  }
+  return null;
+}
+function compress(pts){
+  const out=[];
+  pts.forEach(p=>{
+    const q=out[out.length-1];
+    if(q&&Math.abs(p.x-q.x)<0.5&&Math.abs(p.y-q.y)<0.5)return;
+    out.push({x:p.x,y:p.y});
+  });
+  for(let i=out.length-2;i>0;i--){
+    const a=out[i-1],b=out[i],c=out[i+1];
+    if((Math.abs(a.x-b.x)<0.5&&Math.abs(b.x-c.x)<0.5)||
+       (Math.abs(a.y-b.y)<0.5&&Math.abs(b.y-c.y)<0.5))out.splice(i,1);
+  }
+  return out;
+}
+function stampOcc(pts){
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i];
+    if(Math.abs(a.y-b.y)<0.5){
+      const iy=fy(a.y);
+      for(let ix=fx(Math.min(a.x,b.x));ix<=fx(Math.max(a.x,b.x));ix++)occH[iy*nx+ix]++;
+    }else{
+      const ix=fx(a.x);
+      for(let iy=fy(Math.min(a.y,b.y));iy<=fy(Math.max(a.y,b.y));iy++)occV[iy*nx+ix]++;
+    }
+  }
+}
+function cellsOfPath(pts){
+  const set=new Set();
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i];
+    if(Math.abs(a.y-b.y)<0.5){
+      const iy=fy(a.y);
+      for(let ix=fx(Math.min(a.x,b.x));ix<=fx(Math.max(a.x,b.x));ix++)set.add(iy*nx+ix);
+    }else{
+      const ix=fx(a.x);
+      for(let iy=fy(Math.min(a.y,b.y));iy<=fy(Math.max(a.y,b.y));iy++)set.add(iy*nx+ix);
+    }
+  }
+  return set;
+}
+function faceSlots(inst,face){
+  const r=inst.rect;let lo,hi,c;
+  if(face==='N'||face==='S'){
+    lo=Math.ceil((r.x+4-G/2)/G);hi=Math.floor((r.x+r.w-4-G/2)/G);
+    c=Math.round((r.x+r.w/2-G/2)/G);
+  }else{
+    lo=Math.ceil((r.y+4-G/2)/G);hi=Math.floor((r.y+r.h-4-G/2)/G);
+    c=Math.round((r.y+r.h/2-G/2)/G);
+  }
+  c=Math.max(lo,Math.min(hi,c));
+  if(hi<=lo)return [c];
+  const out=[],seen=new Set();
+  const add=v=>{if(v>=lo&&v<=hi&&!seen.has(v)){seen.add(v);out.push(v);}};
+  for(let d=0;d<=hi-lo;d+=2){add(c+d);add(c-d);}   // 16px pitch first
+  for(let d=1;d<=hi-lo;d+=2){add(c+d);add(c-d);}   // then fill 8px gaps
+  return out;
+}
+/* port slots are claimed as lines are routed; the router itself picks
+   which free slot to use at each end (center preferred, crossings cost more) */
+const PORT_BIAS=2.0;   // strong pull to face centers: a free face is hit dead-center
+let faceUsed=new Map(),curClaims=null;
+function endCands(inst,faceSpec){
+  const faces=(faceSpec==='*')?['N','S','E','W']:[faceSpec];
+  const cands=[];
+  faces.forEach(f=>{
+    const all=faceSlots(inst,f);
+    const used=faceUsed.get(inst.key+'|'+f);
+    let cells=all;
+    if(used){const free=all.filter(c=>!used.has(c));if(free.length)cells=free;}
+    cells.forEach(cell=>cands.push({face:f,cell,center:all[0],out:FACEOUT[f]}));
+  });
+  return {inst,instIdx:inst._i,sub:inst.sub,faceSpec,cands};
+}
+function portOf(end,cd){
+  const r=end.inst.rect;
+  if(cd.face==='N')return {x:cc(cd.cell),y:r.y};
+  if(cd.face==='S')return {x:cc(cd.cell),y:r.y+r.h};
+  if(cd.face==='W')return {x:r.x,y:cc(cd.cell)};
+  return {x:r.x+r.w,y:cc(cd.cell)};
+}
+function claim(end,cd){
+  const key=end.inst.key+'|'+cd.face;
+  if(!faceUsed.has(key))faceUsed.set(key,new Set());
+  faceUsed.get(key).add(cd.cell);
+  if(curClaims)curClaims.push({key,cell:cd.cell});
+}
+function portPoint(inst,face){
+  const s=faceSlots(inst,face)[0],r=inst.rect;
+  if(face==='N')return {x:cc(s),y:r.y};
+  if(face==='S')return {x:cc(s),y:r.y+r.h};
+  if(face==='W')return {x:r.x,y:cc(s)};
+  return {x:r.x+r.w,y:cc(s)};
+}
+function nearestFace(rect,p){
+  const d={N:Math.abs(p.y-rect.y),S:Math.abs(rect.y+rect.h-p.y),
+           W:Math.abs(p.x-rect.x),E:Math.abs(rect.x+rect.w-p.x)};
+  return Object.keys(d).sort((a,b)=>d[a]-d[b])[0];
+}
+function nearestFacePair(ra,rb){
+  const dx=(rb.x+rb.w/2)-(ra.x+ra.w/2),dy=(rb.y+rb.h/2)-(ra.y+ra.h/2);
+  if(Math.abs(dx)>=Math.abs(dy))return dx>0?['E','W']:['W','E'];
+  return dy>0?['S','N']:['N','S'];
+}
+function isAdjacent(a,b){
+  return a.sub===b.sub&&Math.abs(a.gr-b.gr)+Math.abs(a.gc-b.gc)===1;
+}
+function newRoute(A,B){
+  const s=new Set([A.sub]);if(B)s.add(B.sub);
+  return {subsOK:s,allow:new Set(),relax:false,onlySub:null,interiorForbid:null,
+          goalSet:null,goalStates:null,goalBias:null,starts:null,gbb:null};
+}
+function seedStarts(E,route,ray){
+  const info=new Map();
+  E.cands.forEach(cd=>{
+    const pt=portOf(E,cd);
+    if(!corridor(pt,{out:cd.out,instIdx:E.instIdx,sub:E.sub},route,ray))return;
+    const k=(fy(pt.y)*nx+fx(pt.x))*4+cd.out;
+    const g=Math.abs(cd.cell-cd.center)*PORT_BIAS;
+    if(!info.has(k)||g<info.get(k).g)info.set(k,{cd,g});
+  });
+  const starts=[];
+  info.forEach((v,k)=>{
+    const cell=k>>2;
+    starts.push({ix:cell%nx,iy:Math.floor(cell/nx),d:k&3,g:v.g,k});
+  });
+  return {info,starts};
+}
+function tryRoute(A,B,route,ray){
+  const sa=seedStarts(A,route,ray);
+  if(!sa.starts.length)return null;
+  const goalInfo=new Map(),goalBias=new Map();
+  let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+  B.cands.forEach(cd=>{
+    const pt=portOf(B,cd);
+    if(!corridor(pt,{out:cd.out,instIdx:B.instIdx,sub:B.sub},route,ray))return;
+    const gx=fx(pt.x),gy=fy(pt.y),k=(gy*nx+gx)*4+(cd.out^1);
+    const b=Math.abs(cd.cell-cd.center)*PORT_BIAS;
+    if(!goalInfo.has(k)||b<goalInfo.get(k).b){goalInfo.set(k,{cd,b});goalBias.set(k,b);}
+    x0=Math.min(x0,gx);x1=Math.max(x1,gx);y0=Math.min(y0,gy);y1=Math.max(y1,gy);
+  });
+  if(!goalInfo.size)return null;
+  route.starts=sa.starts;route.goalBias=goalBias;
+  route.goalStates=new Set(goalInfo.keys());route.goalSet=null;
+  route.gbb={x0,x1,y0,y1};
+  const res=astar(route);
+  if(!res)return null;
+  const cdA=sa.info.get(res.startK).cd,cdB=goalInfo.get(res.goalK).cd;
+  claim(A,cdA);claim(B,cdB);
+  return compress([portOf(A,cdA),
+    ...res.cells.map(c=>({x:cc(c.ix),y:cc(c.iy)})),
+    portOf(B,cdB)]);
+}
+function fallbackFace(E,toward){
+  if(E.faceSpec!=='*')return E.faceSpec;
+  const r=E.inst.rect,cx=r.x+r.w/2,cy=r.y+r.h/2;
+  if(Math.abs(toward.x-cx)>=Math.abs(toward.y-cy))return toward.x>cx?'E':'W';
+  return toward.y>cy?'S':'N';
+}
+function fallbackPts(A,B){
+  const cb0={x:B.inst.rect.x+B.inst.rect.w/2,y:B.inst.rect.y+B.inst.rect.h/2};
+  const ca0={x:A.inst.rect.x+A.inst.rect.w/2,y:A.inst.rect.y+A.inst.rect.h/2};
+  const fa=fallbackFace(A,cb0),fb=fallbackFace(B,ca0);
+  const ca={face:fa,cell:faceSlots(A.inst,fa)[0],out:FACEOUT[fa]};
+  const cb={face:fb,cell:faceSlots(B.inst,fb)[0],out:FACEOUT[fb]};
+  claim(A,ca);claim(B,cb);
+  const a=portOf(A,ca),b=portOf(B,cb);
+  const mid=(ca.out>=2)?{x:a.x,y:b.y}:{x:b.x,y:a.y};
+  warnings++;
+  return compress([a,mid,b]);
+}
+function routeSingle(L){
+  const ia=instByKey[L.a.inst],ib=instByKey[L.b.inst];
+  if(!ia||!ib)return;
+  const A=endCands(ia,L.a.face),B=endCands(ib,L.b.face);
+  let pts=null;
+  if(L._adj){
+    const r=newRoute(A,B);r.onlySub=A.sub;
+    pts=tryRoute(A,B,r,false);
+  }else if(A.sub===B.sub){
+    const r=newRoute(A,B);r.interiorForbid=A.sub;
+    pts=tryRoute(A,B,r,true);
+  }else{
+    pts=tryRoute(A,B,newRoute(A,B),false);
+  }
+  if(!pts){const r2=newRoute(A,B);r2.relax=true;pts=tryRoute(A,B,r2,false);}
+  if(!pts)pts=fallbackPts(A,B);
+  stampOcc(pts);
+  drawItems.push({lineIds:[L.id],kind:L.kind,pts,group:L.group||null});
+}
+function nearestOnPath(pts,p){
+  let best=null,bd=Infinity;
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i];
+    const qx=Math.max(Math.min(a.x,b.x),Math.min(Math.max(a.x,b.x),p.x));
+    const qy=Math.max(Math.min(a.y,b.y),Math.min(Math.max(a.y,b.y),p.y));
+    const d=Math.abs(qx-p.x)+Math.abs(qy-p.y);
+    if(d<bd){bd=d;best={x:qx,y:qy};}
+  }
+  return best||pts[0];
+}
+function routeGroup(ls){
+  const seen=new Set(),ends=[];
+  ls.forEach(L=>{['a','b'].forEach(e=>{
+    const inst=instByKey[L[e].inst];if(!inst)return;
+    const k=inst.key+'|'+L[e].face;
+    if(seen.has(k))return;          // merged lines share one origin line
+    seen.add(k);ends.push(endCands(inst,L[e].face));
+  });});
+  if(ends.length<2){ls.forEach(routeSingle);return;}
+  const ctr=e=>({x:e.inst.rect.x+e.inst.rect.w/2,y:e.inst.rect.y+e.inst.rect.h/2});
+  let bi=0,bj=1,bd=-1;
+  for(let i=0;i<ends.length;i++)for(let j=i+1;j<ends.length;j++){
+    const pi=ctr(ends[i]),pj=ctr(ends[j]);
+    const d=Math.abs(pi.x-pj.x)+Math.abs(pi.y-pj.y);
+    if(d>bd){bd=d;bi=i;bj=j;}
+  }
+  const subsAll=new Set(ends.map(e=>e.sub));
+  const A=ends[bi],B=ends[bj];
+  let r=newRoute(A,B);r.subsOK=subsAll;
+  let pts=tryRoute(A,B,r,false);
+  if(!pts){const r2=newRoute(A,B);r2.relax=true;r2.subsOK=subsAll;pts=tryRoute(A,B,r2,false);}
+  if(!pts)pts=fallbackPts(A,B);
+  stampOcc(pts);
+  const ids=ls.map(l=>l.id),kind=ls[0].kind,gid=ls[0].group;
+  drawItems.push({lineIds:ids,kind,pts,group:gid});
+  const trunk=cellsOfPath(pts);
+  ends.forEach((e,i)=>{
+    if(i===bi||i===bj)return;
+    const rs=newRoute(e,null);rs.subsOK=subsAll;
+    let spts=null;
+    const se=seedStarts(e,rs,false);
+    if(se.starts.length){
+      rs.starts=se.starts;rs.goalSet=trunk;
+      const res=astar(rs);
+      if(res){
+        const cd=se.info.get(res.startK).cd;
+        claim(e,cd);
+        spts=compress([portOf(e,cd),...res.cells.map(c=>({x:cc(c.ix),y:cc(c.iy)}))]);
+      }
+    }
+    if(!spts){
+      const c0=ctr(e),q=nearestOnPath(pts,c0);
+      const f=fallbackFace(e,q);
+      const cd={face:f,cell:faceSlots(e.inst,f)[0],out:FACEOUT[f]};
+      claim(e,cd);
+      const p0=portOf(e,cd);
+      const mid=(cd.out>=2)?{x:p0.x,y:q.y}:{x:q.x,y:p0.y};
+      spts=compress([p0,mid,q]);warnings++;
+    }
+    stampOcc(spts);
+    drawItems.push({lineIds:ids,kind,pts:spts,group:gid});
+  });
+}
+function rerouteAll(){
+  buildGrid();drawItems=[];warnings=0;faceUsed=new Map();
+  state.lines.forEach(L=>{
+    const ia=instByKey[L.a.inst],ib=instByKey[L.b.inst];
+    L._adj=!!(ia&&ib&&isAdjacent(ia,ib));
+  });
+  // routing units: a unit is one line, or one whole merged group
+  const units=[],doneGroups=new Set();
+  state.lines.forEach(L=>{
+    if(L.group){
+      if(doneGroups.has(L.group))return;
+      doneGroups.add(L.group);
+      units.push({ls:state.lines.filter(x=>x.group===L.group),group:L.group});
+    }else units.push({ls:[L],group:null});
+  });
+  const routeUnit=u=>{
+    drawItems=[];curClaims=u.claims=[];
+    if(u.group)routeGroup(u.ls);else routeSingle(u.ls[0]);
+    u.items=drawItems;curClaims=null;
+  };
+  const restampExcept=skip=>{
+    occH.fill(0);occV.fill(0);faceUsed=new Map();
+    units.forEach(u=>{
+      if(u===skip||!u.items)return;
+      u.items.forEach(it=>stampOcc(it.pts));
+      (u.claims||[]).forEach(c=>{
+        if(!faceUsed.has(c.key))faceUsed.set(c.key,new Set());
+        faceUsed.get(c.key).add(c.cell);
+      });
+    });
+  };
+  units.forEach(routeUnit);                 // first pass: sequential
+  for(let pass=0;pass<2;pass++){            // refinement: re-route each unit
+    warnings=0;
+    units.forEach(u=>{                      // against everyone else's geometry
+      restampExcept(u);
+      routeUnit(u);
+    });
+  }
+  drawItems=[];
+  units.forEach(u=>u.items.forEach(it=>drawItems.push(it)));
+}
+
+/* ================= bridges & path rendering ================= */
+function segsOf(pts){
+  const segs=[];
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i];
+    segs.push({i:i-1,a,b,h:Math.abs(a.y-b.y)<0.5});
+  }
+  return segs;
+}
+function computeHops(){
+  const all=drawItems.map(it=>segsOf(it.pts));
+  drawItems.forEach((it,j)=>{
+    it.hops=[];
+    for(let i=0;i<j;i++){
+      if(drawItems[i].group&&it.group&&drawItems[i].group===it.group)continue;
+      for(const sj of all[j])for(const si of all[i]){
+        if(sj.h===si.h)continue;
+        const hs=sj.h?sj:si,vs=sj.h?si:sj;
+        const hx1=Math.min(hs.a.x,hs.b.x),hx2=Math.max(hs.a.x,hs.b.x);
+        const vy1=Math.min(vs.a.y,vs.b.y),vy2=Math.max(vs.a.y,vs.b.y);
+        const m=3.5;
+        if(vs.a.x>hx1+m&&vs.a.x<hx2-m&&hs.a.y>vy1+m&&hs.a.y<vy2-m){
+          it.hops.push({seg:sj.i,x:vs.a.x,y:hs.a.y});
+        }
+      }
+    }
+  });
+}
+function pathD(pts,hops){
+  const R=5;
+  let d=`M ${pts[0].x} ${pts[0].y}`;
+  for(let i=1;i<pts.length;i++){
+    const a=pts[i-1],b=pts[i];
+    const ux=Math.sign(b.x-a.x),uy=Math.sign(b.y-a.y);
+    const len=Math.abs(b.x-a.x)+Math.abs(b.y-a.y);
+    const hs=(hops||[]).filter(h=>h.seg===i-1)
+      .map(h=>({t:Math.abs(h.x-a.x)+Math.abs(h.y-a.y)}))
+      .sort((p,q)=>p.t-q.t);
+    // crossings closer than one bridge width share a single wider hop
+    const groups=[];
+    hs.forEach(h=>{
+      const g=groups[groups.length-1];
+      if(g&&h.t-g.t1<=2*R+6)g.t1=h.t;
+      else groups.push({t0:h.t,t1:h.t});
+    });
+    let prevEnd=0;
+    for(const g of groups){
+      let s0=Math.max(1,prevEnd+1,g.t0-R),s1=Math.min(len-1,g.t1+R);
+      if(s1-s0<3)continue;
+      prevEnd=s1;
+      const rad=(s1-s0)/2;
+      const sweep=(ux>0||uy>0)?1:0;
+      d+=` L ${a.x+ux*s0} ${a.y+uy*s0} A ${rad} ${rad} 0 0 ${sweep} ${a.x+ux*s1} ${a.y+uy*s1}`;
+    }
+    d+=` L ${b.x} ${b.y}`;
+  }
+  return d;
+}
+
+/* ================= render ================= */
+const svg=document.getElementById('svg');
+function compLabel(inst){
+  const c=inst.comp;
+  let t=c.name;
+  if(c.mode==='multiple'&&c.count>1)t+=' #'+(inst.idx+1);
+  else if(c.count>1)t+=' \u00d7'+c.count;
+  if(t.length>21)t=t.slice(0,20)+'\u2026';
+  return t;
+}
+function render(){
+  computeHops();
+  let s='';
+  s+=`<defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="0.9" fill="#C9CFC4"/></pattern></defs>`;
+  s+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#F4F6F1"/>`;
+  s+=`<rect x="0" y="0" width="${W}" height="${H}" fill="url(#dots)"/>`;
+  s+=`<rect x="18" y="18" width="${W-36}" height="${H-36}" fill="none" stroke="#3A434B" stroke-width="1.4"/>`;
+  // subsystems
+  subsData.forEach((sd,si)=>{
+    if(!sd)return;
+    const r=sd.rect;
+    s+=`<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="#FCFDFB" stroke="#2C343B" stroke-width="1.6"/>`;
+    s+=`<line x1="${r.x}" y1="${r.y+TITLE_H}" x2="${r.x+r.w}" y2="${r.y+TITLE_H}" stroke="#2C343B" stroke-width="1"/>`;
+    s+=`<text x="${r.x+9}" y="${r.y+18}" style="font-family:var(--cond)" font-size="13" font-weight="700" letter-spacing="2.2" fill="#21272C">${esc(SUBS[si].toUpperCase())}</text>`;
+  });
+  // stack shadows sit under the connector lines so lines visibly terminate
+  // at the top unit of a stack
+  instances.forEach(inst=>{
+    const r=inst.rect,c=inst.comp;
+    if(c.mode==='stacked'&&c.count>1){
+      s+=`<g class="comp" data-inst="${inst.key}">`;
+      for(let k=Math.min(c.count-1,3);k>=1;k--){
+        s+=`<rect x="${r.x+k*ST}" y="${r.y+k*ST}" width="${r.w}" height="${r.h}" fill="#F1F3EE" stroke="#7C868D" stroke-width="1.1"/>`;
+      }
+      s+=`</g>`;
+    }
+  });
+  // lines
+  drawItems.forEach(it=>{
+    const d=pathD(it.pts,it.hops);
+    const sel=it.lineIds.some(id=>state.selLines.has(id));
+    if(sel)s+=`<path d="${d}" class="lsel"/>`;
+    s+=`<path d="${d}" class="lhit" data-lines="${it.lineIds.join(',')}"/>`;
+    s+=`<path d="${d}" fill="none" stroke="${lineColor(it.kind)}" stroke-width="2.4" pointer-events="none"/>`;
+  });
+  // components
+  instances.forEach(inst=>{
+    const r=inst.rect,c=inst.comp;
+    const sel=state.selComps.has(c.id);
+    s+=`<g class="comp" data-inst="${inst.key}">`;
+    const her=inst.comp.her;
+    const fill=her?PALS[state.palette][her]:'#FFFFFF';
+    s+=`<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="${fill}" stroke="${sel?'#E2A23B':'#2C343B'}" stroke-width="${sel?2.6:1.5}"/>`;
+    if(her)s+=`<text x="${r.x+r.w-4}" y="${r.y+10}" text-anchor="end" style="font-family:var(--mono)" font-size="7.5" fill="#21272C" opacity="0.7">${her}</text>`;
+    s+=`<text x="${r.x+r.w/2}" y="${r.y+r.h/2+3.5}" text-anchor="middle" style="font-family:var(--mono)" font-size="10.5" fill="#21272C">${esc(compLabel(inst))}</text>`;
+    s+=`</g>`;
+  });
+  // title block (signature drawing-sheet corner) with in-sheet legends
+  const tb=titleBlockRect();
+  const tbL=legendEntries(false),tbH=usedHeritages();
+  const twoCol=tbL.length>6,pal=PALS[state.palette];
+  s+=`<g style="font-family:var(--mono)" fill="#21272C">`;
+  s+=`<rect x="${tb.x}" y="${tb.y}" width="${tb.w}" height="${tb.h}" fill="#FCFDFB" stroke="#2C343B" stroke-width="1.6"/>`;
+  s+=`<line x1="${tb.x}" y1="${tb.y+20}" x2="${tb.x+tb.w}" y2="${tb.y+20}" stroke="#2C343B" stroke-width="1"/>`;
+  s+=`<text x="${tb.x+9}" y="${tb.y+14}" style="font-family:var(--cond)" font-size="11.5" font-weight="700" letter-spacing="1.6">LEGEND</text>`;
+  s+=`<text x="${tb.x+tb.w-9}" y="${tb.y+14}" text-anchor="end" font-size="8.5" fill="#79847D">${new Date().toISOString().slice(0,10)}</text>`;
+  let lx=tb.x+8;
+  if(tbL.length){
+    tbL.forEach((en,i)=>{
+      const col=twoCol?Math.floor(i/Math.ceil(tbL.length/2)):0;
+      const row=twoCol?i%Math.ceil(tbL.length/2):i;
+      const x0=lx+col*106,y0=tb.y+27+row*13;
+      s+=`<line x1="${x0}" y1="${y0}" x2="${x0+22}" y2="${y0}" stroke="${en.color}" stroke-width="2.4"/>`;
+      s+=`<text x="${x0+27}" y="${y0+3}" font-size="8">${esc(en.label.toUpperCase())}</text>`;
+    });
+    lx+=(twoCol?218:112);
+  }
+  if(tbH.length){
+    s+=`<line x1="${lx}" y1="${tb.y+20}" x2="${lx}" y2="${tb.y+tb.h}" stroke="#2C343B" stroke-width="1"/>`;
+    tbH.forEach((h,i)=>{
+      const x0=lx+8,y0=tb.y+27+i*13;
+      s+=`<rect x="${x0}" y="${y0}" width="9" height="9" fill="${pal[h[0]]}" stroke="#2C343B" stroke-width="0.8"/>`;
+      s+=`<text x="${x0+14}" y="${y0+8}" font-size="8">(${h[0]}) ${esc(h[2].toUpperCase())}</text>`;
+    });
+  }
+  s+=`</g>`;
+  s+=`<g id="ghost"></g>`;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.style.width=(W*state.zoom)+'px';
+  svg.style.height=(H*state.zoom)+'px';
+  svg.innerHTML=s;
+}
+
+/* ================= status & UI state ================= */
+const $=id=>document.getElementById(id);
+function setStatus(t){$('status').textContent=t;}
+function getLine(id){return state.lines.find(l=>l.id===id);}
+function updateUI(){
+  const sl=[...state.selLines].map(getLine).filter(Boolean);
+  $('btnDelete').disabled=!sl.length;
+  $('btnMerge').disabled=!(sl.length>=2&&new Set(sl.map(l=>l.kind)).size===1);
+  $('btnUnmerge').disabled=!sl.some(l=>l.group);
+  const sc=[...state.selComps].map(id=>state.comps.find(c=>c.id===id)).filter(Boolean);
+  $('btnSwap').disabled=!(sc.length===2&&sc[0].sub===sc[1].sub);
+  const multi=sc.filter(c=>c.count>1);
+  ['Single','Stacked','Multiple'].forEach(m=>{
+    const b=$('mode'+m);
+    b.disabled=!multi.length;
+    b.style.borderColor=(multi.length&&multi.every(c=>c.mode===m.toLowerCase()))?'var(--accent)':'';
+  });
+  $('ifSimple').style.borderColor=!state.detail?'var(--accent)':'';
+  $('ifDetail').style.borderColor=state.detail?'var(--accent)':'';
+  $('kindSeg').style.display=state.detail?'none':'flex';
+  $('kindSel').style.display=state.detail?'block':'none';
+  if(state.detail&&[...$('kindSel').options].some(o=>o.value===state.kind))$('kindSel').value=state.kind;
+  $('kindPower').className=state.kind==='power'?'on-power':'';
+  $('kindData').className=state.kind==='data'?'on-data':'';
+  const herSel=$('herSel');
+  const hers=sc.map(c=>c.her||'');
+  herSel.disabled=!sc.length;
+  if(!sc.length)herSel.value='';
+  else if(hers.every(h=>h===hers[0]))herSel.value=hers[0];
+  else herSel.value='';
+}
+function refresh(){
+  relayout();sanitizeLines();rerouteAll();render();updateUI();scheduleSave();
+}
+
+/* ================= pointer interaction ================= */
+function evtPt(e){
+  const r=svg.getBoundingClientRect();
+  return {x:(e.clientX-r.left)*(W/r.width),y:(e.clientY-r.top)*(H/r.height)};
+}
+function instAt(p){
+  return instances.find(t=>{
+    const f=footprint(t);
+    return p.x>=f.x-3&&p.x<=f.x+f.w+3&&p.y>=f.y-3&&p.y<=f.y+f.h+3;
+  })||null;
+}
+const EDGE_ZONE=12;
+function faceOrAuto(inst,p){
+  const r=inst.rect;
+  const d=Math.min(Math.abs(p.y-r.y),Math.abs(r.y+r.h-p.y),
+                   Math.abs(p.x-r.x),Math.abs(r.x+r.w-p.x));
+  return d<=EDGE_ZONE?nearestFace(r,p):'*';
+}
+function faceTick(r,f){
+  const c='#E2A33B';
+  if(f==='N')return `<line x1="${r.x}" y1="${r.y}" x2="${r.x+r.w}" y2="${r.y}" stroke="${c}" stroke-width="4" pointer-events="none"/>`;
+  if(f==='S')return `<line x1="${r.x}" y1="${r.y+r.h}" x2="${r.x+r.w}" y2="${r.y+r.h}" stroke="${c}" stroke-width="4" pointer-events="none"/>`;
+  if(f==='W')return `<line x1="${r.x}" y1="${r.y}" x2="${r.x}" y2="${r.y+r.h}" stroke="${c}" stroke-width="4" pointer-events="none"/>`;
+  return `<line x1="${r.x+r.w}" y1="${r.y}" x2="${r.x+r.w}" y2="${r.y+r.h}" stroke="${c}" stroke-width="4" pointer-events="none"/>`;
+}
+function endMark(inst,f){
+  const r=inst.rect;
+  return f==='*'
+    ?`<rect x="${r.x-4}" y="${r.y-4}" width="${r.w+8}" height="${r.h+8}" fill="none" stroke="#E2A33B" stroke-width="2" stroke-dasharray="4 3" pointer-events="none"/>`
+    :faceTick(r,f);
+}
+let drag=null;
+svg.addEventListener('pointerdown',e=>{
+  if(e.button!==0)return;
+  const p=evtPt(e);
+  const gi=e.target.closest&&e.target.closest('[data-inst]');
+  const gl=e.target.closest&&e.target.closest('[data-lines]');
+  const instKey=gi?gi.getAttribute('data-inst'):null;
+  drag={p0:p,moved:false,inst:instKey,
+    fa:instKey?faceOrAuto(instByKey[instKey],p):null,
+    lines:gl?gl.getAttribute('data-lines'):null};
+  svg.setPointerCapture(e.pointerId);
+});
+svg.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  const p=evtPt(e);
+  if(Math.hypot(p.x-drag.p0.x,p.y-drag.p0.y)>5)drag.moved=true;
+  if(drag.moved&&drag.inst){
+    const inst=instByKey[drag.inst];
+    if(!inst)return;
+    const r=inst.rect;
+    const anchor=drag.fa==='*'?{x:r.x+r.w/2,y:r.y+r.h/2}:portPoint(inst,drag.fa);
+    const col=lineColor(state.kind);
+    let s=`<line x1="${anchor.x}" y1="${anchor.y}" x2="${p.x}" y2="${p.y}" stroke="${col}" stroke-width="1.6" stroke-dasharray="5 4" pointer-events="none"/>`;
+    s+=endMark(inst,drag.fa);
+    const t=instAt(p);
+    if(t&&t.key!==inst.key)s+=endMark(t,faceOrAuto(t,p));
+    const g=svg.querySelector('#ghost');
+    if(g)g.innerHTML=s;
+  }
+});
+svg.addEventListener('pointerup',e=>{
+  if(!drag)return;
+  const p=evtPt(e),d=drag;drag=null;
+  const g=svg.querySelector('#ghost');
+  if(g)g.innerHTML='';
+  if(d.moved&&d.inst){
+    const a=instByKey[d.inst],b=instAt(p);
+    if(a&&b&&b.key!==a.key){
+      const dup=state.lines.find(l=>l.kind===state.kind&&(
+        (l.a.inst===a.key&&l.b.inst===b.key)||(l.a.inst===b.key&&l.b.inst===a.key)));
+      if(dup){
+        setStatus(`A ${kindInfo(state.kind).label} connector already exists between these components \u2014 only one of each type is allowed per pair.`);
+        return;
+      }
+      const fb=faceOrAuto(b,p);
+      const L={id:'L'+(state.nextLine++),kind:state.kind,
+        a:{inst:a.key,face:d.fa},b:{inst:b.key,face:fb},group:null};
+      state.lines.push(L);
+      state.selLines=new Set([L.id]);state.selComps.clear();
+      rerouteAll();render();updateUI();scheduleSave();
+      const fmt=f=>f==='*'?'auto':f+' face';
+      setStatus(`${kindInfo(L.kind).label} connector routed \u00b7 ${a.comp.name} (${fmt(d.fa)}) \u2192 ${b.comp.name} (${fmt(fb)})`+(warnings?` \u00b7 ${warnings} fallback route(s) on sheet`:'')+'.');
+    }
+    return;
+  }
+  if(!d.moved){
+    if(d.lines){
+      const ids=d.lines.split(',');
+      const all=ids.every(id=>state.selLines.has(id));
+      if(!e.shiftKey)state.selLines.clear();
+      ids.forEach(id=>{if(all&&e.shiftKey)state.selLines.delete(id);else state.selLines.add(id);});
+      state.selComps.clear();
+      const sl=[...state.selLines].map(getLine).filter(Boolean);
+      setStatus(`${sl.length} line(s) selected${sl.some(l=>l.group)?' \u00b7 includes a merged bus':''}.`);
+    }else if(d.inst){
+      const c=instByKey[d.inst]&&instByKey[d.inst].comp;
+      if(c){
+        if(!e.shiftKey)state.selComps.clear();
+        if(state.selComps.has(c.id)&&e.shiftKey)state.selComps.delete(c.id);
+        else state.selComps.add(c.id);
+        state.selLines.clear();
+        setStatus(`${c.name} selected (\u00d7${c.count}, ${c.mode}).`);
+      }
+    }else{
+      state.selLines.clear();state.selComps.clear();setStatus('Selection cleared.');
+    }
+    render();updateUI();
+  }
+});
+window.addEventListener('keydown',e=>{
+  if(e.target.tagName==='TEXTAREA'||e.target.tagName==='INPUT')return;
+  if(e.key==='Escape'){state.selLines.clear();state.selComps.clear();render();updateUI();}
+  if((e.key==='Delete'||e.key==='Backspace')&&state.selLines.size){e.preventDefault();deleteSelected();}
+});
+
+/* ================= actions ================= */
+function deleteSelected(){
+  const n=state.selLines.size;
+  state.lines=state.lines.filter(l=>!state.selLines.has(l.id));
+  state.selLines.clear();
+  const counts={};
+  state.lines.forEach(l=>{if(l.group)counts[l.group]=(counts[l.group]||0)+1;});
+  state.lines.forEach(l=>{if(l.group&&counts[l.group]<2)l.group=null;});
+  rerouteAll();render();updateUI();scheduleSave();
+  setStatus(`Deleted ${n} line(s).`);
+}
+$('btnDelete').onclick=deleteSelected;
+$('btnMerge').onclick=()=>{
+  const ls=[...state.selLines].map(getLine).filter(Boolean);
+  if(ls.length<2)return;
+  if(new Set(ls.map(l=>l.kind)).size>1){setStatus('Only lines of the same type can merge.');return;}
+  const gid='G'+(state.nextGroup++);
+  const oldGroups=new Set(ls.map(l=>l.group).filter(Boolean));
+  state.lines.forEach(l=>{if(oldGroups.has(l.group))l.group=gid;});
+  ls.forEach(l=>l.group=gid);
+  rerouteAll();render();updateUI();scheduleSave();
+  setStatus(`Merged ${state.lines.filter(l=>l.group===gid).length} lines into one ${kindInfo(ls[0].kind).label} bus.`);
+};
+$('btnUnmerge').onclick=()=>{
+  [...state.selLines].map(getLine).filter(Boolean).forEach(l=>l.group=null);
+  const counts={};
+  state.lines.forEach(l=>{if(l.group)counts[l.group]=(counts[l.group]||0)+1;});
+  state.lines.forEach(l=>{if(l.group&&counts[l.group]<2)l.group=null;});
+  rerouteAll();render();updateUI();scheduleSave();
+  setStatus('Unmerged \u2014 lines route in parallel again.');
+};
+['Single','Stacked','Multiple'].forEach(m=>{
+  $('mode'+m).onclick=()=>{
+    state.comps.forEach(c=>{
+      if(state.selComps.has(c.id)&&c.count>1)c.mode=m.toLowerCase();
+    });
+    refresh();scheduleSave();
+    setStatus(`Display set to ${m.toLowerCase()}.`);
+  };
+});
+$('btnSwap').onclick=()=>{
+  const ids=[...state.selComps];
+  if(ids.length!==2)return;
+  const i=state.comps.findIndex(c=>c.id===ids[0]);
+  const j=state.comps.findIndex(c=>c.id===ids[1]);
+  if(i<0||j<0||state.comps[i].sub!==state.comps[j].sub){
+    setStatus('Select two components in the same subsystem to swap.');
+    return;
+  }
+  const a=state.comps[i].name,b=state.comps[j].name;
+  [state.comps[i],state.comps[j]]=[state.comps[j],state.comps[i]];
+  refresh();scheduleSave();
+  setStatus(`Swapped ${a} \u2194 ${b}.`);
+};
+$('herSel').onchange=()=>{
+  const v=$('herSel').value||null;
+  const ids=[...state.selComps];
+  ids.forEach(id=>{const c=state.comps.find(x=>x.id===id);if(c)c.her=v;});
+  render();updateUI();scheduleSave();
+  if(ids.length){
+    const lab=v?HERS.find(h=>h[0]===v)[2]:'None';
+    setStatus(`Heritage set to ${lab} on ${ids.length} component(s).`);
+  }
+};
+$('kindPower').onclick=()=>{state.kind='power';updateUI();};
+$('kindData').onclick=()=>{state.kind='data';updateUI();};
+$('ifSimple').onclick=()=>{
+  state.detail=false;
+  state.kind=kindInfo(state.kind).fam==='data'?'data':'power';
+  render();updateUI();scheduleSave();
+};
+$('ifDetail').onclick=()=>{
+  state.detail=true;
+  if(!state.kind.includes(':')&&state.kind!=='prop')
+    state.kind=state.kind==='data'?'data:CAN':'power:28V';
+  render();updateUI();scheduleSave();
+};
+$('kindSel').onchange=e=>{state.kind=e.target.value;updateUI();};
+function buildPalRow(){
+  const row=$('palRow');
+  row.innerHTML=PALS.map((p,i)=>
+    `<button class="pal${i===state.palette?' on':''}" data-pal="${i}" title="${p.name}">`+
+    HERS.map(([h])=>`<span style="background:${p[h]}"></span>`).join('')+
+    `</button>`).join('');
+  row.querySelectorAll('button').forEach(b=>{
+    b.onclick=()=>{state.palette=+b.getAttribute('data-pal');buildPalRow();buildHerLegend();render();scheduleSave();};
+  });
+}
+function buildHerLegend(){
+  const p=PALS[state.palette];
+  $('herLegend').innerHTML=HERS.map(([h,lab])=>
+    `<span style="display:inline-block;width:13px;height:13px;background:${p[h]};border:1px solid #0007;vertical-align:middle;margin-right:7px"></span>(${h}) ${lab}<br>`).join('');
+}
+$('btnClear').onclick=()=>{state.lines=[];state.selLines.clear();rerouteAll();render();updateUI();scheduleSave();setStatus('All connectors cleared.');};
+$('btnArrange').onclick=()=>{
+  const {vis,meta}=buildMeta();
+  const w=Array.from({length:8},()=>new Array(8).fill(0));
+  let tot=0;
+  state.lines.forEach(L=>{
+    const a=instByKey[L.a.inst],b=instByKey[L.b.inst];
+    if(!a||!b||a.sub===b.sub)return;
+    w[a.sub][b.sub]++;w[b.sub][a.sub]++;tot++;
+  });
+  if(!tot){setStatus('Auto-arrange needs at least one connector between different subsystems.');return;}
+  const N=vis.length,arr=vis.slice();
+  const Ht0=packBest(vis,meta).Ht;   // fix the sheet height for the search
+  let best=arr.slice(),bestC=Infinity;
+  (function perm(k){
+    if(k===N){
+      const pos=packCenters(arr,meta,Ht0);
+      let cost=0;
+      for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){
+        const ww=w[arr[i]][arr[j]];
+        if(ww)cost+=ww*(Math.abs(pos[arr[i]].x-pos[arr[j]].x)+Math.abs(pos[arr[i]].y-pos[arr[j]].y));
+      }
+      if(cost<bestC){bestC=cost;best=arr.slice();}
+      return;
+    }
+    for(let i=k;i<N;i++){
+      [arr[k],arr[i]]=[arr[i],arr[k]];perm(k+1);[arr[k],arr[i]]=[arr[i],arr[k]];
+    }
+  })(0);
+  state.order=best.concat(state.order.filter(si=>!vis.includes(si)));
+  refresh();scheduleSave();
+  setStatus('Subsystems re-arranged by connection density.');
+};
+$('zoomIn').onclick=()=>{state.zoom=Math.min(1.6,state.zoom+0.15);render();};
+$('zoomOut').onclick=()=>{state.zoom=Math.max(0.25,state.zoom-0.15);render();};
+function fitToPage(){
+  const wrap=document.getElementById('wrap');
+  const z=Math.min((wrap.clientWidth-44)/W,(wrap.clientHeight-44)/H);
+  if(isFinite(z)&&z>0)state.zoom=Math.max(0.25,Math.min(1.6,z));
+  render();
+}
+$('zoomFit').onclick=fitToPage;
+$('btnFile').onclick=()=>$('fileInput').click();
+$('fileInput').onchange=e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{$('manifest').value=rd.result;applyManifest();};
+  rd.readAsText(f);
+  e.target.value='';
+};
+function applyManifest(){
+  const {comps,errors}=parseManifest($('manifest').value);
+  if(errors.length){setStatus('Manifest errors:\n'+errors.join('\n'));return;}
+  if(!comps.length){setStatus('Manifest is empty \u2014 add at least one component.');return;}
+  const old=state.comps,map={};
+  comps.forEach(nc=>{
+    const oc=old.find(o=>o.sub===nc.sub&&o.name.toLowerCase()===nc.name.toLowerCase()&&!map[o.id]);
+    if(oc){if(nc.count>1)nc.mode=oc.mode;nc.her=oc.her;map[oc.id]=nc;}
+  });
+  state.lines=state.lines.filter(L=>['a','b'].every(e=>{
+    const[cid,idx]=L[e].inst.split(':');
+    const nc=map[cid];
+    if(!nc)return false;
+    const avail=nc.mode==='multiple'?nc.count:1;
+    L[e].inst=nc.id+':'+Math.min(+idx,avail-1);
+    return true;
+  }));
+  state.comps=comps;state.selComps.clear();
+  refresh();scheduleSave();
+  setStatus(`Manifest applied \u00b7 ${comps.length} components across ${new Set(comps.map(c=>c.sub)).size} subsystems.`);
+}
+$('btnApply').onclick=applyManifest;
+
+/* ================= persistence & export ================= */
+const STORAGE_KEY='spacecraft-sbd-v1';
+let saveTimer=null;
+function fmtTime(){const d=new Date(),p=n=>String(n).padStart(2,'0');return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());}
+function setSaveNote(t,cls){const el=$('saveNote');el.textContent=t;el.className=cls||'';}
+function serializeState(){
+  return {
+    app:'spacecraft-sbd',version:1,
+    manifest:$('manifest').value,
+    comps:state.comps.map(c=>({id:c.id,name:c.name,sub:c.sub,count:c.count,mode:c.mode,her:c.her})),
+    lines:state.lines.map(l=>({kind:l.kind,a:{inst:l.a.inst,face:l.a.face},b:{inst:l.b.inst,face:l.b.face},group:l.group})),
+    order:state.order,palette:state.palette,detail:state.detail
+  };
+}
+function restoreState(data){
+  if(!data||typeof data!=='object'||!Array.isArray(data.comps))return false;
+  const comps=[];
+  data.comps.forEach(c=>{
+    if(!c||typeof c.name!=='string'||!c.name)return;
+    comps.push({
+      id:String(c.id||('c'+(comps.length+1))),name:c.name,
+      sub:(Number.isInteger(c.sub)&&c.sub>=0&&c.sub<8)?c.sub:0,
+      count:Math.max(1,Math.min(99,Math.floor(+c.count)||1)),
+      mode:['single','stacked','multiple'].includes(c.mode)?c.mode:'single',
+      her:['F','m','M','N','C'].includes(c.her)?c.her:null
+    });
+  });
+  if(!comps.length)return false;
+  state.comps=comps;
+  state.lines=[];
+  (Array.isArray(data.lines)?data.lines:[]).forEach(L=>{
+    if(!L||!L.a||!L.b)return;
+    const end=e=>({inst:String(e.inst||''),face:['*','N','S','E','W'].includes(e.face)?e.face:'*'});
+    state.lines.push({id:'L'+(state.nextLine++),kind:(L.kind in KIND_INFO)?L.kind:'data',
+      a:end(L.a),b:end(L.b),group:L.group?String(L.group):null});
+  });
+  let mc=0;
+  state.comps.forEach(c=>{const n=parseInt(String(c.id).replace(/\D/g,''),10);if(n>mc)mc=n;});
+  state.nextComp=mc+1;
+  let mg=0;
+  state.lines.forEach(l=>{if(l.group){const n=parseInt(String(l.group).replace(/\D/g,''),10);if(n>mg)mg=n;}});
+  state.nextGroup=mg+1;
+  if(Array.isArray(data.order)){
+    const o=data.order.filter((v,i)=>Number.isInteger(v)&&v>=0&&v<8&&data.order.indexOf(v)===i);
+    [0,1,2,3,4,5,6,7].forEach(i=>{if(!o.includes(i))o.push(i);});
+    state.order=o;
+  }
+  if(Number.isInteger(data.palette)&&data.palette>=0&&data.palette<PALS.length)state.palette=data.palette;
+  state.detail=!!data.detail;
+  if(state.detail&&!state.kind.includes(':')&&state.kind!=='prop')state.kind='power:28V';
+  if(typeof data.manifest==='string')$('manifest').value=data.manifest;
+  return true;
+}
+function saveLocal(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(serializeState()));
+    setSaveNote('Saved locally \u00b7 '+fmtTime(),'ok');
+  }catch(e){
+    setSaveNote('Autosave unavailable \u2014 use Save .json','err');
+  }
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveLocal,500);}
+function loadLocal(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    return raw?JSON.parse(raw):null;
+  }catch(e){return null;}
+}
+function downloadBlob(blob,name){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=name;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),5000);
+}
+function cleanSvgMarkup(){
+  // render without selection chrome; interaction-only elements are styled by
+  // the page stylesheet and would fall back to black fill in a bare file
+  const sl=state.selLines,sc=state.selComps;
+  state.selLines=new Set();state.selComps=new Set();
+  render();
+  const src=svg.cloneNode(true);
+  state.selLines=sl;state.selComps=sc;
+  render();
+  src.querySelectorAll('.lhit,.lsel,#ghost').forEach(el=>el.remove());
+  src.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  src.setAttribute('width',W);src.setAttribute('height',H);
+  src.removeAttribute('style');src.removeAttribute('id');
+  return new XMLSerializer().serializeToString(src);
+}
+$('btnSvg').onclick=()=>{
+  downloadBlob(new Blob([cleanSvgMarkup()],{type:'image/svg+xml'}),'spacecraft_sbd.svg');
+  setStatus('SVG exported.');
+};
+$('btnPng').onclick=()=>{
+  const url=URL.createObjectURL(new Blob([cleanSvgMarkup()],{type:'image/svg+xml'}));
+  const img=new Image();
+  img.onload=()=>{
+    const SC=2;
+    const cv=document.createElement('canvas');
+    cv.width=W*SC;cv.height=H*SC;
+    const ctx=cv.getContext('2d');
+    ctx.scale(SC,SC);ctx.drawImage(img,0,0);
+    URL.revokeObjectURL(url);
+    cv.toBlob(b=>{
+      if(b){downloadBlob(b,'spacecraft_sbd.png');setStatus('PNG exported at 2\u00d7 scale.');}
+      else setStatus('PNG export failed.');
+    },'image/png');
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);setStatus('PNG export failed.');};
+  img.src=url;
+};
+$('btnSaveJson').onclick=()=>{
+  downloadBlob(new Blob([JSON.stringify(serializeState(),null,1)],{type:'application/json'}),'spacecraft_sbd.json');
+  setStatus('Diagram saved to .json \u2014 use Load .json to restore it anywhere.');
+};
+$('btnLoadJson').onclick=()=>$('jsonInput').click();
+$('jsonInput').onchange=e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    let data=null;
+    try{data=JSON.parse(rd.result);}catch(err){}
+    if(data&&restoreState(data)){
+      buildPalRow();buildHerLegend();
+      refresh();fitToPage();saveLocal();
+      setStatus('Diagram restored from file.');
+    }else{
+      setStatus('Could not read that file as a saved diagram.');
+    }
+  };
+  rd.readAsText(f);
+  e.target.value='';
+};
+
+/* ================= init ================= */
+const DEFAULT_MANIFEST=`C&DH: Flight Computer, IO Board
+GN&C: Star Tracker x2, IMU, Reaction Wheel x4, Sun Sensor x2, Torque Rod x3, Magnetometer, GPS Receiver
+EPS: Battery x2, PCDU, Solar Array x2
+Comms: X-Band Transponder, TWTA, LGA x2, HGA
+Structures and Mechanisms: Separation System, Solar Array Drive x2, R&Rs x4
+Thermal: Heater x8, Thermostat x8
+Propulsion: Prop Tank, Thruster x4, Latch Valve x2
+Instrument: Imager, Payload Processor`;
+function findComp(sub,name){
+  return state.comps.find(c=>c.sub===sub&&c.name.toLowerCase()===name.toLowerCase());
+}
+function seedLine(subA,nameA,subB,nameB,kind){
+  const ca=findComp(subA,nameA),cb=findComp(subB,nameB);
+  if(!ca||!cb)return;
+  const ia=instByKey[ca.id+':0'],ib=instByKey[cb.id+':0'];
+  if(!ia||!ib)return;
+  state.lines.push({id:'L'+(state.nextLine++),kind,
+    a:{inst:ia.key,face:'*'},b:{inst:ib.key,face:'*'},group:null});
+}
+(function init(){
+  const saved=loadLocal();
+  if(saved&&restoreState(saved)){
+    buildPalRow();buildHerLegend();
+    refresh();
+    fitToPage();
+    setSaveNote('Restored last session \u00b7 '+fmtTime(),'ok');
+    setStatus('Restored your last diagram from this browser. Drag between boxes to keep drawing.');
+    return;
+  }
+  $('manifest').value=DEFAULT_MANIFEST;
+  const {comps}=parseManifest(DEFAULT_MANIFEST);
+  state.comps=comps;
+  relayout();
+  seedLine(2,'Battery',2,'PCDU','power');
+  seedLine(2,'PCDU',0,'Flight Computer','power');
+  seedLine(2,'PCDU',3,'TWTA','power');
+  seedLine(1,'IMU',0,'Flight Computer','data');
+  seedLine(0,'Flight Computer',3,'X-Band Transponder','data');
+  buildPalRow();buildHerLegend();
+  refresh();
+  fitToPage();
+  setStatus('Ready. Drag between boxes to draw a connector \u2014 press an edge to pin a face, press the middle to let the router choose.');
+})();
+</script>
+</body>
+</html>
