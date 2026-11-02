@@ -224,23 +224,45 @@
         }
         
         .post-item {
-            margin-bottom: 24px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            transition: border-color 0.2s;
         }
         
-        .post-item:last-child {
-            border-bottom: none;
+        .post-item:hover {
+            border-color: var(--text-muted);
         }
         
-        .post-item a {
-            color: var(--link-color);
+        .post-title a {
+            color: var(--text-color);
             text-decoration: none;
-            display: block;
+        }
+
+        .post-title a:hover {
+            color: var(--link-color);
+        }
+
+        .post-link {
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            padding: 8px 16px;
+            border: 1px solid var(--text-color);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: var(--text-color);
+            color: var(--bg-color);
         }
         
-        .post-item a:hover {
+        .post-link:hover {
             opacity: var(--nav-hover-opacity);
+        }
+
+        .post-item a:focus-visible {
+            outline: 2px solid var(--link-color);
+            outline-offset: 5px;
         }
         
         .post-date {
@@ -250,31 +272,16 @@
         }
         
         .post-title {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 4px;
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 12px;
             color: var(--text-color);
         }
         
-        .post-category {
-            font-size: 14px;
+        .post-description {
             color: var(--text-muted);
-        }
-        
-        .empty-state {
-            color: var(--text-muted);
-            font-style: italic;
-            margin-top: 40px;
-            min-width: 100%;
-        }
-        
-        .empty-state a {
-            color: var(--link-color);
-            text-decoration: none;
-        }
-        
-        .empty-state a:hover {
-            text-decoration: underline;
+            line-height: 1.7;
         }
         
         /* General styling for in-text links in content areas */
@@ -423,21 +430,15 @@
         <h1>Writing</h1>
         
         <ul class="posts">
-            <!-- Posts will be added here as you create them -->
-            <!-- Example structure:
             <li class="post-item">
-                <a href="writing/your-post-title.html">
-                    <div class="post-date">Jan 15, 2024</div>
-                    <div class="post-title">Your Post Title</div>
-                    <div class="post-category">—essays</div>
-                </a>
+                <article aria-labelledby="first-essay-title">
+                    <div class="post-date">2026 · Essay · Working draft</div>
+                    <h2 class="post-title" id="first-essay-title"><a href="writing/first-essay.html">First essay (working title)</a></h2>
+                    <p class="post-description">A writing project in progress. For now, a placeholder essay with figures, references, and a few rabbit holes to explore along the way.</p>
+                    <a class="post-link" href="writing/first-essay.html">Read the draft →</a>
+                </article>
             </li>
-            -->
         </ul>
-        
-        <div class="empty-state">
-            <p>More writing coming soon.</p>
-        </div>
     </div>
     
     <footer>

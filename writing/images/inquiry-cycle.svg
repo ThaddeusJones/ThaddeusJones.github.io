@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="420" viewBox="0 0 680 420" fill="none">
+  <title>A cycle of inquiry</title>
+  <desc>Four connected stages: ask a question, build a model, gather evidence, and revise the question.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse">
+      <path d="m1 1 5 3-5 3" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="680" height="420" rx="6" fill="#f7f9fc"/>
+  <g stroke="#dce4ee">
+    <path d="M0 60h680M0 120h680M0 180h680M0 240h680M0 300h680M0 360h680"/>
+    <path d="M40 0v420M100 0v420M160 0v420M220 0v420M280 0v420M340 0v420M400 0v420M460 0v420M520 0v420M580 0v420M640 0v420"/>
+  </g>
+  <g stroke="#2563eb" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M290 115h98"/>
+    <path d="M510 165v88"/>
+    <path d="M390 305h-98"/>
+    <path d="M170 255v-88"/>
+  </g>
+  <g fill="white" stroke="#c6d4e5">
+    <rect x="50" y="65" width="240" height="100" rx="8"/>
+    <rect x="390" y="65" width="240" height="100" rx="8"/>
+    <rect x="390" y="255" width="240" height="100" rx="8"/>
+    <rect x="50" y="255" width="240" height="100" rx="8"/>
+  </g>
+  <g font-family="Inter, Arial, sans-serif" text-anchor="middle">
+    <g fill="#2563eb" font-size="18" letter-spacing="2">
+      <text x="170" y="99">01</text>
+      <text x="510" y="99">02</text>
+      <text x="510" y="289">03</text>
+      <text x="170" y="289">04</text>
+    </g>
+    <g fill="#1a1a1a" font-size="24" font-weight="500">
+      <text x="170" y="136">Question</text>
+      <text x="510" y="136">Model</text>
+      <text x="510" y="326">Evidence</text>
+      <text x="170" y="326">Revision</text>
+    </g>
+    <text x="340" y="217" fill="#52647b" font-size="18">A cycle of inquiry</text>
+    <text x="340" y="395" fill="#52647b" font-size="16">ILLUSTRATIVE FIGURE · PLACEHOLDER</text>
+  </g>
+</svg>

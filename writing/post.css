@@ -1,0 +1,639 @@
+/* Shared shell matches the existing project and writing pages. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #1a1a1a;
+    --text-muted: #4a4a4a;
+    --link-color: #2563eb;
+    --nav-hover-opacity: 0.6;
+    --border-color: #e5e5e5;
+}
+
+html.dark-mode {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --text-muted: #888;
+    --link-color: #60a5fa;
+    --nav-hover-opacity: 0.7;
+    --border-color: #333;
+}
+
+html.space-mode {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --text-muted: #aaaaaa;
+    --link-color: #60a5fa;
+    --nav-hover-opacity: 0.7;
+    --border-color: #333;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    padding: 40px 20px 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.space-mode body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+html.space-mode body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, white, transparent),
+        radial-gradient(1.5px 1.5px at 23% 45%, white, transparent),
+        radial-gradient(1.5px 1.5px at 34% 67%, white, transparent),
+        radial-gradient(1.5px 1.5px at 45% 23%, white, transparent),
+        radial-gradient(1.5px 1.5px at 56% 89%, white, transparent),
+        radial-gradient(1.5px 1.5px at 67% 12%, white, transparent),
+        radial-gradient(1.5px 1.5px at 78% 56%, white, transparent),
+        radial-gradient(1.5px 1.5px at 89% 34%, white, transparent),
+        radial-gradient(1.5px 1.5px at 15% 72%, white, transparent),
+        radial-gradient(1.5px 1.5px at 26% 39%, white, transparent),
+        radial-gradient(1.5px 1.5px at 37% 81%, white, transparent),
+        radial-gradient(1.5px 1.5px at 48% 15%, white, transparent),
+        radial-gradient(1.5px 1.5px at 59% 63%, white, transparent),
+        radial-gradient(1.5px 1.5px at 71% 28%, white, transparent),
+        radial-gradient(1.5px 1.5px at 82% 74%, white, transparent),
+        radial-gradient(1.5px 1.5px at 93% 47%, white, transparent),
+        radial-gradient(1.5px 1.5px at 8% 31%, white, transparent),
+        radial-gradient(1.5px 1.5px at 19% 84%, white, transparent),
+        radial-gradient(1.5px 1.5px at 31% 52%, white, transparent),
+        radial-gradient(1.5px 1.5px at 42% 96%, white, transparent),
+        radial-gradient(1.5px 1.5px at 53% 7%, white, transparent),
+        radial-gradient(1.5px 1.5px at 64% 41%, white, transparent),
+        radial-gradient(1.5px 1.5px at 75% 88%, white, transparent),
+        radial-gradient(1.5px 1.5px at 86% 25%, white, transparent),
+        radial-gradient(1.5px 1.5px at 97% 59%, white, transparent),
+        radial-gradient(1.5px 1.5px at 11% 66%, white, transparent),
+        radial-gradient(1.5px 1.5px at 22% 93%, white, transparent),
+        radial-gradient(1.5px 1.5px at 33% 4%, white, transparent),
+        radial-gradient(1.5px 1.5px at 44% 37%, white, transparent),
+        radial-gradient(1.5px 1.5px at 55% 71%, white, transparent),
+        radial-gradient(1.5px 1.5px at 66% 19%, white, transparent),
+        radial-gradient(1.5px 1.5px at 77% 48%, white, transparent),
+        radial-gradient(1.5px 1.5px at 88% 82%, white, transparent),
+        radial-gradient(1.5px 1.5px at 99% 13%, white, transparent),
+        radial-gradient(1.5px 1.5px at 6% 54%, white, transparent),
+        radial-gradient(1.5px 1.5px at 17% 26%, white, transparent),
+        radial-gradient(1.5px 1.5px at 28% 78%, white, transparent),
+        radial-gradient(1.5px 1.5px at 39% 9%, white, transparent),
+        radial-gradient(1.5px 1.5px at 51% 61%, white, transparent),
+        radial-gradient(1.5px 1.5px at 62% 33%, white, transparent),
+        radial-gradient(1.5px 1.5px at 73% 95%, white, transparent),
+        radial-gradient(1.5px 1.5px at 84% 16%, white, transparent),
+        radial-gradient(1.5px 1.5px at 95% 69%, white, transparent),
+        radial-gradient(1.5px 1.5px at 3% 12%, white, transparent),
+        radial-gradient(1.5px 1.5px at 14% 58%, white, transparent),
+        radial-gradient(1.5px 1.5px at 25% 83%, white, transparent),
+        radial-gradient(1.5px 1.5px at 36% 29%, white, transparent),
+        radial-gradient(1.5px 1.5px at 47% 64%, white, transparent),
+        radial-gradient(1.5px 1.5px at 58% 11%, white, transparent),
+        radial-gradient(1.5px 1.5px at 69% 76%, white, transparent),
+        radial-gradient(1.5px 1.5px at 80% 42%, white, transparent),
+        radial-gradient(1.5px 1.5px at 91% 88%, white, transparent),
+        radial-gradient(1.5px 1.5px at 2% 35%, white, transparent),
+        radial-gradient(1.5px 1.5px at 13% 71%, white, transparent),
+        radial-gradient(1.5px 1.5px at 24% 16%, white, transparent),
+        radial-gradient(1.5px 1.5px at 35% 53%, white, transparent),
+        radial-gradient(1.5px 1.5px at 46% 97%, white, transparent),
+        radial-gradient(1.5px 1.5px at 57% 24%, white, transparent),
+        radial-gradient(1.5px 1.5px at 68% 61%, white, transparent),
+        radial-gradient(1.5px 1.5px at 79% 8%, white, transparent),
+        radial-gradient(1.5px 1.5px at 90% 46%, white, transparent),
+        radial-gradient(1.5px 1.5px at 1% 79%, white, transparent),
+        radial-gradient(1.5px 1.5px at 16% 5%, white, transparent),
+        radial-gradient(1.5px 1.5px at 27% 92%, white, transparent),
+        radial-gradient(1.5px 1.5px at 38% 38%, white, transparent),
+        radial-gradient(1.5px 1.5px at 49% 75%, white, transparent),
+        radial-gradient(1.5px 1.5px at 60% 22%, white, transparent),
+        radial-gradient(1.5px 1.5px at 72% 68%, white, transparent),
+        radial-gradient(1.5px 1.5px at 83% 14%, white, transparent),
+        radial-gradient(1.5px 1.5px at 94% 51%, white, transparent);
+    background-size: 100% 100%;
+    opacity: 1;
+}
+
+.container {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+nav {
+    margin-bottom: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 400;
+    transition: opacity 0.2s;
+}
+
+nav a:hover {
+    opacity: var(--nav-hover-opacity);
+}
+
+nav a.active {
+    font-weight: 500;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-color);
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.theme-toggle:hover {
+    opacity: var(--nav-hover-opacity);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+footer {
+    background-color: transparent;
+    color: var(--text-muted);
+    margin-top: 80px;
+    padding: 60px 0 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-content {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 40px;
+}
+
+.footer-site-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1;
+}
+
+.footer-site-name a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.footer-site-name a:hover {
+    opacity: var(--nav-hover-opacity);
+}
+
+.footer-social {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.footer-social a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social a:hover {
+    opacity: var(--nav-hover-opacity);
+}
+
+.footer-social svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+}
+
+.footer-description {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.footer-copyright {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.footer-copyright a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.footer-copyright a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .footer-description {
+        text-align: left;
+    }
+}
+
+
+.container {
+    width: 100%;
+}
+
+nav {
+    margin-bottom: 40px;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    z-index: 2;
+    padding: 8px 12px;
+    background: var(--bg-color);
+    color: var(--link-color);
+}
+
+.skip-link:focus {
+    top: 8px;
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--link-color);
+    outline-offset: 5px;
+}
+
+.back-link {
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+.back-link a,
+.post-end a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.back-link a:hover,
+.post-end a:hover {
+    text-decoration: underline;
+}
+
+.post-header {
+    margin-bottom: 32px;
+}
+
+.post-meta,
+.post-byline {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.post-title {
+    margin: 12px 0 16px;
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+}
+
+.post-subtitle {
+    margin-bottom: 16px;
+    color: var(--text-muted);
+    font-size: 18px;
+}
+
+.draft-note {
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    border-left: 2px solid var(--link-color);
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.post-content {
+    color: var(--text-muted);
+    font-size: 17px;
+    line-height: 1.85;
+    overflow-wrap: break-word;
+}
+
+.post-content p,
+.post-content ul,
+.post-content ol {
+    margin-bottom: 20px;
+}
+
+.post-content h2,
+.post-content h3 {
+    color: var(--text-color);
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.post-content h2 {
+    margin: 44px 0 16px;
+    font-size: 24px;
+}
+
+.post-content h3 {
+    margin: 28px 0 12px;
+    font-size: 19px;
+}
+
+.post-content ul,
+.post-content ol {
+    padding-left: 24px;
+}
+
+.post-content li {
+    margin-bottom: 8px;
+}
+
+.post-content a {
+    color: var(--link-color);
+    text-underline-offset: 3px;
+}
+
+.post-content strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.abstract {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.abstract h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.contents {
+    margin: 24px 0 36px;
+    font-size: 14px;
+}
+
+.contents h2 {
+    margin: 0 0 12px;
+    font-size: 14px;
+}
+
+.contents ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 24px;
+    margin-bottom: 0;
+}
+
+.contents li {
+    margin-bottom: 0;
+}
+
+.post-content figure {
+    margin: 32px 0;
+}
+
+.post-content figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+}
+
+.post-content figcaption {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.post-content blockquote {
+    border-left: 2px solid var(--link-color);
+    padding-left: 24px;
+    margin: 28px 0;
+    color: var(--text-color);
+    font-size: 20px;
+    line-height: 1.65;
+}
+
+/* Native disclosures remain keyboard accessible and work without JavaScript. */
+.rabbit-hole {
+    margin: 28px 0;
+    padding: 0 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.rabbit-hole summary {
+    padding: 16px 0;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.rabbit-hole summary::marker {
+    color: var(--link-color);
+}
+
+.rabbit-label {
+    color: var(--link-color);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-right: 8px;
+}
+
+.rabbit-hole[open] summary {
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.rabbit-hole h3 {
+    margin-top: 0;
+    font-size: 17px;
+}
+
+.note-ref {
+    font-size: 0.75em;
+    line-height: 0;
+}
+
+.note-ref a,
+.note-backlink {
+    padding: 4px;
+    text-decoration: none;
+}
+
+[id] {
+    scroll-margin-top: 24px;
+}
+
+.notes {
+    border-top: 1px solid var(--border-color);
+    margin-top: 48px;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.notes h2 {
+    margin-top: 28px;
+    font-size: 20px;
+}
+
+.notes li {
+    padding: 6px 8px;
+    margin-bottom: 12px;
+}
+
+.notes li:target {
+    outline: 1px solid var(--link-color);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+.post-end {
+    margin-top: 40px;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 24px 16px 0;
+    }
+
+    nav {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    nav ul {
+        flex: 1;
+        gap: 12px 18px;
+    }
+
+    .post-title {
+        font-size: 30px;
+    }
+
+    .post-content {
+        font-size: 16px;
+    }
+
+    .contents ol {
+        grid-template-columns: 1fr;
+    }
+
+    .rabbit-label {
+        display: block;
+    }
+}
+
+@media print {
+    html.dark-mode,
+    html.space-mode {
+        --bg-color: #ffffff;
+        --text-color: #1a1a1a;
+        --text-muted: #4a4a4a;
+        --link-color: #1a1a1a;
+        --border-color: #cccccc;
+    }
+
+    body {
+        display: block;
+        padding: 0;
+    }
+
+    .container {
+        max-width: none;
+    }
+
+    nav,
+    .skip-link,
+    .back-link,
+    .post-end,
+    footer,
+    html.space-mode body::before {
+        display: none;
+    }
+
+    figure,
+    .rabbit-hole {
+        break-inside: avoid;
+    }
+}
